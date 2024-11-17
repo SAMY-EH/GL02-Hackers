@@ -73,7 +73,7 @@ function rechercherSallesPourCours(nomCours, contenuDonnees) {
 // Demander à l'utilisateur d'entrer un nom de cours via la ligne de commande
 const args = process.argv.slice(2);
 if (args.length === 0) {
-    console.log('Veuillez fournir un nom de cours en argument, exemple : node rechercheSalle.js MC01');
+    console.log('Veuillez fournir un nom de cours en argument, exemple : node spec1.js MC01');
 } else {
     const nomCours = args[0].toUpperCase(); // Pour normaliser le nom du cours
     const contenuDonnees = lireDonneesFichier(nomCours);
