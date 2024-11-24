@@ -4,7 +4,7 @@ const readline = require('readline');
 const Table = require('cli-table3');
 
 // Répertoire principal contenant les données
-const repertoirePrincipal = path.join(__dirname, 'SujetA_data');
+const repertoirePrincipal = path.join(__dirname, 'data');
 
 // Heures d'ouverture des salles
 const horairesOuverture = {

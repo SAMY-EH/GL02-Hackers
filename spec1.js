@@ -24,7 +24,7 @@ function lireDonneesFichier(nomCours) {
         return null;
     }
 
-    const cheminFichier = path.join(__dirname, 'SujetA_data', sousRepertoire, 'edt.cru');
+    const cheminFichier = path.join(__dirname, 'data', sousRepertoire, 'edt.cru');
     console.log(`Chemin du fichier : ${cheminFichier}`);
 
     try {
@@ -81,4 +81,3 @@ if (args.length === 0) {
         rechercherSallesPourCours(nomCours, contenuDonnees);
     }
 }
-

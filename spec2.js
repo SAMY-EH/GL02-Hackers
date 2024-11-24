@@ -5,7 +5,7 @@ const readline = require('readline');
 const Table = require('cli-table3');
 
 // Définir le répertoire principal des données
-const repertoirePrincipal = path.join(__dirname, 'SujetA_data');
+const repertoirePrincipal = path.join(__dirname, 'data');
 
 // Fonction pour lister toutes les salles présentes dans les fichiers edt.cru
 function listerSallesDisponibles() {
