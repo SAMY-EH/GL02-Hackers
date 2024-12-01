@@ -1,6 +1,8 @@
 // Importer le module 'fs' pour lire les fichiers
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
+
 
 // Fonction pour déterminer le sous-répertoire correspondant à la première lettre du cours
 function determinerSousRepertoire(nomCours) {
@@ -70,14 +72,22 @@ function rechercherSallesPourCours(nomCours, contenuDonnees) {
     console.log(`Cours "${nomCours}" non trouvé dans les données.`);
 }
 
-// Demander à l'utilisateur d'entrer un nom de cours via la ligne de commande
-const args = process.argv.slice(2);
-if (args.length === 0) {
-    console.log('Veuillez fournir un nom de cours en argument, exemple : node spec1.js MC01');
-} else {
-    const nomCours = args[0].toUpperCase(); // Pour normaliser le nom du cours
-    const contenuDonnees = lireDonneesFichier(nomCours);
+// Interface utilisateur pour demander le nom du cours
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+// Inviter l'utilisateur à entrer un nom de cours
+rl.question('Veuillez saisir le nom du cours pour afficher les salles associées : ', (nomCours) => {
+    const nomCoursNormalise = nomCours.toUpperCase();
+    const contenuDonnees = lireDonneesFichier(nomCoursNormalise);
+
     if (contenuDonnees) {
-        rechercherSallesPourCours(nomCours, contenuDonnees);
+        rechercherSallesPourCours(nomCoursNormalise, contenuDonnees);
+    } else {
+        console.log('Impossible de trouver les données pour le cours spécifié.');
     }
-}
+
+    rl.close(); 
+});
