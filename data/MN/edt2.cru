@@ -1,0 +1,22 @@
+EDT.CRU - Test
+
+Vérifier ce qui se passe en cas de séance liée avec salles multiples :
+Comportement souhaité : Si 2 séances liées avec deux salles chacunes
+Séance 1 : Salles 1 et 2 - Séance 2 : Salles 3 et 4
+On doit avoir :
++UVUV
+Séance 1 S=1 / Séance 2 S=3
+Séance 1 S=2 / Séance 2 S=4
+
+
++MATH02
+1,C1,P=96,H=L 14:00-16:00,F1,S=A002/L :-0:00,F,S=//
+1,D1,P=25,H=MA 13:00-14:00,F1,S=B210/L 16:00-18:00,F1,S=B210//
+1,D2,P=25,H=V 13:00-14:00,F1,S=B210/J 14:00-16:00,F1,S=B210//
+1,D3,P=25,H=MA 14:00-16:00,F1,S=B210/ME 18:00-19:00,F1,S=B210//
+1,T1,P=28,H=ME 10:00-12:00,F2,S=A208//
+1,T2,P=24,H=MA 16:00-18:00,F2,S=A208//
+1,T3,P=26,H=J 18:00-20:00,F2,S=A208//
+
+
+Page générée en : 1.1899800300598 sec
