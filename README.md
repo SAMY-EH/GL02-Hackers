@@ -1,7 +1,5 @@
 # GL02-Hackers
 
----
-
 # Gestion des Salles de l'Université de Sealand (SRU)
 
 Ce projet vise à optimiser l'utilisation des salles de l'Université de la République de Sealand (SRU) en permettant aux étudiants, enseignants et gestionnaires de vérifier la disponibilité, la capacité, et l'utilisation des espaces. Le logiciel permet également la planification des cours et des sessions de travail collaboratif.
