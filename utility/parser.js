@@ -13,12 +13,12 @@
  * @functions
  * - validateDay(day): Valide un jour de la semaine (L, MA, ME, J, V, S, D).
  * - validateTime(time): Valide un horaire au format HH:MM-HH:MM.
- * - parseAllEdtFiles(directory): Lit tous les fichiers edt.cru dans un répertoire et retourne les créneaux.
- * - parseEdtFile(filepath): Lit un fichier edt.cru et retourne les créneaux.
- * - parseEdtData(data): Analyse le contenu d'un fichier edt.cru en lignes de créneaux.
- * - parseTimeSlot(line, course): Analyse une ligne de créneau et retourne un ou plusieurs objets représentant des créneaux.
- * - parseSingleTimeSlot(timeSlotString, course): Analyse un créneau de base.
- * - parseAdditionalTimeSlot(part, baseTimeSlot): Analyse un créneau additionnel en héritant les informations du créneau de base.
+ * - parseAllEdtFiles(directory, debug): Lit tous les fichiers edt.cru dans un répertoire et retourne les créneaux.
+ * - parseEdtFile(filepath, debug): Lit un fichier edt.cru et retourne les créneaux.
+ * - parseEdtData(data, debug): Analyse le contenu d'un fichier edt.cru en lignes de créneaux.
+ * - parseTimeSlot(line, course, debug): Analyse une ligne de créneau et retourne un ou plusieurs objets représentant des créneaux.
+ * - parseSingleTimeSlot(timeSlotString, course, debug): Analyse un créneau de base.
+ * - parseAdditionalTimeSlot(part, baseTimeSlot, debug): Analyse un créneau additionnel en héritant les informations du créneau de base.
  *
  * @dependencies
  * - Node.js 'fs' module pour la lecture des fichiers locaux.
