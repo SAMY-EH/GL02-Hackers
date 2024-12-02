@@ -8,6 +8,20 @@
  * @author Théo TORREILLES
  * @version 1.0
  * @date Décembre 2024
+ * 
+ * @functions
+ * - displayMenu(): Affiche le menu principal avec les différentes fonctionnalités disponibles.
+ * - handleUserChoice(choice): Gère le choix de l'utilisateur et appelle la fonction correspondante.
+ * - executeSpec1(): Exécute la SPEC_01 : Recherche des salles pour un cours donné.
+ * - executeSpec2(): Exécute la SPEC_02 : Consultation de la capacité d’une salle.
+ * - executeSpec3(): Exécute la SPEC_03 : Vérification des disponibilités d’une salle.
+ * - executeSpec4(): Exécute la SPEC_04 : Recherche de salle disponible pour un créneau donné.
+ * - executeSpec5(): Exécute la SPEC_05 : Génération d’un fichier iCalendar.
+ * - executeSpec6(): Exécute la SPEC_06 : Vérification de la conformité des données.
+ * - executeSpec7(): Exécute la SPEC_07 : Visualisation du taux d’occupation des salles.
+ * - executeSpec8(): Exécute la SPEC_08 : Classement des salles par capacité.
+ * - executeSpec9(): Exécute la SPEC_09 : Consultation des salles sur ou sous-exploitées.
+ * - promptUser(): Affiche le menu principal et attend la saisie de l'utilisateur.
  *
  * @dependencies
  * - Node.js `readline` module pour la gestion des entrées utilisateur.
@@ -15,6 +29,16 @@
  *
  * @usage
  *   node main.js
+ * 
+ * @note
+ * - Ce programme nécessite Node.js pour s'exécuter.
+ * - L'utilisateur peut revenir au menu principal à tout moment en tapant "*".
+ * - Le programme se termine lorsque l'utilisateur choisit de quitter.
+ * 
+ * @remarks
+ * - Les spécifications sont implémentées dans des fichiers séparés pour faciliter la maintenance et la lisibilité du code.
+ * - Chaque fonctionnalité est exécutée en appelant la fonction correspondante du fichier spécifique.
+ * - Les résultats sont affichés dans la console pour chaque fonctionnalité, avec des messages d'erreur si nécessaire.
  */
 
 import readline from 'readline';
