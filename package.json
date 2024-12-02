@@ -1,13 +1,12 @@
 {
   "name": "gl02-hackers",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "main": "main.js",
   "scripts": {
     "start": "node main.js"
   },
   "dependencies": {
-    "cli-table3": "^0.6.5",
-    "uuid": "^11.0.3"
+    "ical-generator": "^8.0.1"
   }
 }
