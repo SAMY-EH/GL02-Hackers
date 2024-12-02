@@ -14,7 +14,7 @@ Ce projet vise à optimiser l'utilisation des salles de l'Université de la Rép
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Utilisation](#utilisation)
-- [Structure des fichiers de données](#structure-des-fichiers-de-données)
+- [Structure des fichiers](#structure-des-fichiers)
 - [Remarque](#remarque)
 
 ---
@@ -119,7 +119,7 @@ Tapez le numéro correspondant à la fonctionnalité souhaitée et suivez les in
 
 ---
 
-## Structure des fichiers de données
+## Structure des fichiers 
 
 ```bash
 /data                        # Répertoire contenant les données des cours triés par ordre alphabétique
