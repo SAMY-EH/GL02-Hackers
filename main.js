@@ -6,7 +6,7 @@
  * @context Projet GL02 - Hackers
  *
  * @author Théo TORREILLES
- * @version 1.0
+ * @version 1.1
  * @date Décembre 2024
  * 
  * @functions
@@ -683,5 +683,4 @@ function promptUser() {
 }
 
 // Lancer le programme en affichant le menu principal
-displayMenu();
 promptUser();
