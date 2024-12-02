@@ -14,6 +14,7 @@
  *
  * @functions
  * - findRoomsForCourse(directory, courseName): Recherche les salles et créneaux associés à un cours donné, et les affiche.
+ * - groupBy(array, key): Regroupe les éléments d'un tableau par une clé spécifique.
  *
  * @dependencies
  * - Module personnalisé 'functions.js' : Fournit des fonctions utilitaires.
@@ -64,11 +65,11 @@ function findRoomsForCourse(directory, courseName) {
     }
 
     // Regrouper les créneaux par salle
-    let roomsGrouped = functions.groupBy(roomsForCourse, 'room');
+    let roomsGrouped = groupBy(roomsForCourse, 'room');
 
     // Pour chaque salle, regrouper les créneaux par jour et trier les jours
     Object.keys(roomsGrouped).forEach(room => {
-        roomsGrouped[room] = functions.groupBy(roomsGrouped[room], 'day');
+        roomsGrouped[room] = groupBy(roomsGrouped[room], 'day');
         const sortedDays = functions.sortDays(Object.keys(roomsGrouped[room]));
         roomsGrouped[room] = sortedDays.reduce((acc, day) => {
             acc[day] = roomsGrouped[room][day];
@@ -90,6 +91,23 @@ function findRoomsForCourse(directory, courseName) {
     });
 
     return roomsGrouped;
+}
+
+/**
+ * Fonction pour regrouper des éléments d'un tableau par une clé spécifique
+ * @param {Array} array Le tableau d'objets à regrouper
+ * @param {string} key La clé sur laquelle regrouper les objets (ex: 'room' ou 'day')
+ * @returns {Object} Objet regroupant les éléments par la clé spécifiée
+ */
+function groupBy(array, key) {
+    return array.reduce((acc, item) => {
+        const groupKey = item[key];
+        if (!acc[groupKey]) {
+            acc[groupKey] = [];
+        }
+        acc[groupKey].push(item);
+        return acc;
+    }, {});
 }
 
 // Exporter la fonction pour une utilisation externe

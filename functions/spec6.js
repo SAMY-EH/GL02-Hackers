@@ -18,6 +18,7 @@
  * - isOverlapping(timeSlot1, timeSlot2): Vérifie si deux créneaux se chevauchent.
  * - isWithinTimeRange(timeSlot, inputStart, inputEnd): Vérifie si un créneau est dans la plage horaire spécifiée.
  * - displayConflicts(overlappingTimeSlots): Affiche les conflits détectés.
+ * - displayTimeSlot(timeSlot): Affiche les détails d'un crénau.
  *
  * @dependencies
  * - Module personnalisé 'functions.js' : Fournit des fonctions utilitaires.
@@ -198,14 +199,29 @@ function displayConflicts(overlappingTimeSlots) {
         overlappingTimeSlots.forEach((conflict, index) => {
             console.log(`Conflit #${index + 1} :`);
             console.log(`Créneau #1 :`);
-            functions.displayTimeSlot(conflict.timeSlot1);
+            displayTimeSlot(conflict.timeSlot1);
             console.log(`Créneau #2 :`);
-            functions.displayTimeSlot(conflict.timeSlot2);
+            displayTimeSlot(conflict.timeSlot2);
             console.log('-----------------------------------');
         });
     } else {
         console.log("✅ Aucun conflit détecté. Les créneaux sont conformes.");
     }
+}
+
+/**
+ * Fonction utilitaire pour afficher les détails d'un créneau
+ * @param {Object} timeSlot Le créneau à afficher
+ */
+function displayTimeSlot(timeSlot) {
+    console.log(`Cours : ${timeSlot.course}`);
+    console.log(`  - ID          : ${timeSlot.id}`);
+    console.log(`  - Type        : ${timeSlot.type}`);
+    console.log(`  - Capacité    : ${timeSlot.capacity}`);
+    console.log(`  - Jour        : ${functions.transformDayName(timeSlot.day)}`);
+    console.log(`  - Heures      : ${timeSlot.startTime} - ${timeSlot.endTime}`);
+    console.log(`  - Salle       : ${timeSlot.room}`);
+    console.log(`  - Index       : ${timeSlot.index}`);
 }
 
 // Exporter la fonction pour une utilisation externe
