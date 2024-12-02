@@ -2,80 +2,125 @@
 
 # Gestion des Salles de l'Université de Sealand (SRU)
 
-Ce projet permet de vérifier la disponibilité des salles à l'Université de la République de Sealand (SRU) pour une utilisation optimale des espaces. L'application permet aux étudiants et aux enseignants de consulter la disponibilité des salles de cours pour travailler en groupe ou organiser des séances de cours.
+Ce projet vise à optimiser l'utilisation des salles de l'Université de la République de Sealand (SRU) en permettant aux étudiants, enseignants et gestionnaires de vérifier la disponibilité, la capacité, et l'utilisation des espaces. Le logiciel permet également la planification des cours et des sessions de travail collaboratif.
 
 ## Table des matières
 
 - [Contexte](#contexte)
-- [Fonctionnalités](#fonctionnalités)
+- [Fonctionnalités fonctionnelles](#fonctionnalités-fonctionnelles)
+- [Fonctionnalités non fonctionnelles](#fonctionnalités-non-fonctionnelles)
 - [Prérequis](#prérequis)
+- [Installation](#installation)
+- [Utilisation](#utilisation)
 - [Structure des fichiers](#structure-des-fichiers)
+- [Remarque](#remarque)
 
 ---
 
 ## Contexte
 
-L'Université Centrale de la République de Sealand (SRU) souhaite améliorer la gestion de l'occupation de ses salles de cours. Le système permet aux utilisateurs (étudiants et enseignants) de :
+L'Université Centrale de la République de Sealand (SRU) cherche à améliorer la gestion de l'occupation de ses salles de cours. Le système est conçu pour permettre :
 
-1. Vérifier la disponibilité des salles en fonction des horaires et des jours de la semaine.
-2. Afficher les créneaux horaires libres pour des sessions de travail collaboratif.
-3. Consulter la capacité maximale des salles et planifier l'usage des espaces.
+1. Aux étudiants et enseignants de vérifier la disponibilité des salles et d'organiser des sessions de travail.
+2. Aux gestionnaires de locaux d'identifier les salles sous-exploitées et sur-exploitées afin de planifier des ajustements futurs.
 
 ---
 
-## Fonctionnalités
+## Fonctionnalités fonctionnelles
 
 ### **SPEC_01** : Recherche des salles pour un cours donné
-- L'utilisateur peut rechercher un cours et afficher les informations concernant les salles et les horraires de ce cours.
+- Le logiciel doit permettre aux utilisateurs de rechercher les salles attribuées à un cours spécifique.
 
 ### **SPEC_02** : Consultation de la capacité d’une salle
-- L'utilisateur peut consulter la capcité maximale d'une salle, en terme de nombre de place assise. 
+- Les utilisateurs doivent pouvoir consulter la capacité maximale d’une salle en termes de nombre de places.
 
 ### **SPEC_03** : Vérification des disponibilités d'une salle
-- Afin de voir si une salle est libre pour des sessions de travail collaboratif, l'utilisateur peu entrer le nom d'une salle pour afficher les horraires où la salle est disponible (du Lundi au samedi )
+- Le logiciel doit permettre de vérifier les moments où une salle spécifique est libre durant la semaine pour permettre du travail collaboratif.
+
+### **SPEC_04** : Recherche de salle disponible pour un créneau donné
+- Les utilisateurs doivent pouvoir connaître les salles disponibles pour un créneau horaire donné.
+
+### **SPEC_05** : Génération d’un fichier iCalendar
+- Le logiciel doit permettre aux utilisateurs de générer un fichier iCalendar (conforme à la norme RFC 5545) pour les cours auxquels ils participent, entre deux dates spécifiées, et ainsi l’intégrer à son propre calendrier.
+
+### **SPEC_06** : Vérification de la conformité des données
+- Le logiciel doit vérifier qu'aucune salle ne soit utilisée par deux cours différents au même créneau horaire.
+
+### **SPEC_07** : Visualisation du taux d’occupation des salles
+- Le système doit pouvoir générer une visualisation synthétique du taux d’occupation des salles sur une période donnée.
+
+### **SPEC_08** : Classement des salles par capacité
+- Le logiciel doit permettre le classement des salles par leur capacité d’accueil (par exemple, combien de salles de 24 places sont disponibles).
+
+### **SPEC_09** : Consultation des salles sur ou sous-exploitées
+- Le gestionnaire des locaux doit pouvoir identifier quelles salles sont sous-exploitées ou surexploitées afin de planifier des ajustements futurs.
+
+---
+
+## Fonctionnalités non fonctionnelles
+
+### **SPEC_NF_01** : Simplicité d’utilisation
+- Le logiciel doit être facile à utiliser, même pour des utilisateurs non techniques. Il doit fournir des messages d'erreurs clairs en cas d’entrées incorrectes.
+
+### **SPEC_NF_02** : Performance
+- Le système doit fournir des réponses aux requêtes en temps réel, avec un délai maximal de 2 secondes pour les opérations de recherche et de génération de fichiers.
+
+### **SPEC_NF_03** : Compatibilité
+- Le fichier iCalendar généré doit être compatible avec les principaux logiciels de gestion d’agendas (Google Calendar, Outlook, etc.).
 
 ---
 
 ## Prérequis
 
-Avant d'utiliser ce projet, vous devez vous assurer d'avoir les outils suivants installés sur votre machine :
+Avant d'utiliser ce projet, assurez-vous d'avoir installé les outils suivants :
 
 - **Node.js** : [Télécharger Node.js](https://nodejs.org/)
-- **npm** : Le gestionnaire de paquets de Node.js .
+- **npm** : Le gestionnaire de paquets de Node.js
 
 ---
 
-## Exemple de fonctionnement
+## Installation
 
-### **Vérification des créneaux libres d'une salle** :
-
-L'utilisateur peut saisir le nom d'une salle pour afficher ses créneaux horaires libres, par exemple :
+Clonez le dépôt, puis installez les dépendances nécessaires :
 
 ```bash
-Veuillez saisir le nom de la salle pour vérifier ses disponibilités : A108
-
-
-Recherche des disponibilités pour la salle : A108
-
-┌───────────────┬────────────────────────────────────────────────────┐
-│ Jour          │ Créneaux disponibles                               │
-├───────────────┼────────────────────────────────────────────────────┤
-│ Lundi         │ 8h - 10h, 12h - 14h, 16h - 22h                     │
-│ Mardi         │ Aucun créneau libre                                │
-│ Mercredi      │ 8h - 12h, 14h - 22h                                │
-│ Jeudi         │ 8h - 22h                                           │
-│ Vendredi      │ 8h - 10h, 14h - 22h                                │
-│ Samedi        │ 8h - 12h                                           │
-└───────────────┴────────────────────────────────────────────────────┘
+git clone <url_du_dépôt>
+cd GL02-Hackers
+npm install
 ```
 
-Salle non trouvée : Si l'utilisateur entre une salle qui n'existe pas, un message d'erreur s'affiche 
-``Erreur : La salle "XYZ" n'existe pas dans les données.``
+---
+
+## Utilisation
+
+Pour lancer l'application, utilisez la commande suivante :
+
+```bash
+node main.js
+```
+
+### Exécution des fonctionnalités
+
+Lors du démarrage de l'application, un menu principal s'affiche, vous permettant de choisir l'une des fonctionnalités :
+
+- Recherche des salles pour un cours donné
+- Consultation de la capacité d’une salle
+- Vérification des disponibilités d'une salle
+- Recherche de salle disponible pour un créneau donné
+- Génération d’un fichier iCalendar
+- Vérification de la conformité des données
+- Visualisation du taux d’occupation des salles
+- Classement des salles par capacité
+- Consultation des salles sur ou sous-exploitées
+
+Tapez le numéro correspondant à la fonctionnalité souhaitée et suivez les instructions.
+
+---
 
 ## Structure des fichiers
-```bash
 
-/SujetA_data    # Répertoire contenant les données des cours triés par ordre alphabétique
+```bash
+/data                        # Répertoire contenant les données des cours triés par ordre alphabétique
   /AB
     edt.cru
   /CD
@@ -83,10 +128,28 @@ Salle non trouvée : Si l'utilisateur entre une salle qui n'existe pas, un messa
   ...
   /ST
     edt.cru
-spec1.js        # Fichier pour la recherche des salles pour un cours donné
-spec2.js        # Fichier pour la consultation de la capacité maximale d’une salle
-spec3.js        # Fichier pour la vérification des disponibilités
 
+/functions                   # Répertoire contenant les fichiers des spécifications
+  spec1.js                   # Recherche des salles pour un cours donné
+  spec2.js                   # Consultation de la capacité maximale d’une salle
+  spec3.js                   # Vérification des disponibilités
+  spec4.js                   # Recherche de salle disponible pour un créneau donné
+  spec5.js                   # Génération d’un fichier iCalendar
+  spec6.js                   # Vérification de la conformité des données
+  spec7.js                   # Visualisation du taux d’occupation des salles
+  spec8.js                   # Classement des salles par capacité
+  spec9.js                   # Consultation des salles sur ou sous-exploitées
+
+/utility                     # Répertoire contenant des modules utilitaires
+  functions.js               # Fonctions utilitaires (tri, transformation de jours, regroupement de données, etc...)
+  parser.js                  # Analyse des fichiers edt.cru et extraction des créneaux
+
+main.js                      # Point d'entrée du programme, avec menu principal pour sélectionner les fonctionnalités
+README.md                    # Documentation du projet
 ```
-### Remarque 
-Le projet est en développement, des ajouts de fonctionnalités et des corrections de bugs peuvent être attendus dans les versions futures.
+
+---
+
+## Remarque 
+
+Le projet est en cours de développement et peut être sujet à des ajouts de fonctionnalités ainsi qu'à des corrections de bugs dans les versions futures. Pour toute contribution ou rapport de problème, n'hésitez pas à ouvrir une issue ou une pull request sur le dépôt.
