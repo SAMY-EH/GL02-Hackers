@@ -8,7 +8,7 @@
  *          Le système doit pouvoir générer une visualisation synthétique du taux d’occupation des salles sur une période donnée.
  *
  * @author Théo TORREILLES, Julie VAN HOUDENHOVE
- * @version 1.1
+ * @version 1.2
  * @date Décembre 2024
  *
  * @functions
@@ -28,8 +28,8 @@
  *
  * @note
  * - Les données sont extraites des fichiers edt.cru présents dans le répertoire spécifié.
- * - Les créneaux sont regroupés par salle et triés par ordre croissant de taux d'occupation.
  * - Les créneaux horaires par défaut vont de 08:00 à 20:00 pour chaque jour.
+ * - Les salles sont triées par bâtiment et par ordre alphabétique.
  * - Si aucune salle n'est disponible dans la période spécifiée, un message d'erreur est affiché.
  * 
  * @remarks
@@ -110,22 +110,55 @@ function visualizeRoomOccupancy(directory, startDate, endDate, showResult = true
             return;
         }
 
-        // Calculer les taux d'occupation de chaque salle
-        const sortedRooms = Object.entries(roomOccupancy)
-            .map(([room, occupancy]) => {
-                const occupancyRate = ((occupancy.totalOccupiedSlots / (occupancy.totalOccupiedSlots + occupancy.totalSlots)) * 100).toFixed(2);
-                return { room, occupancyRate: parseFloat(occupancyRate), occupancy };
-            })
-            .sort((a, b) => a.occupancyRate - b.occupancyRate); // Trier par ordre croissant de taux d'occupation
+        // Regrouper les salles par bâtiment
+        const roomsByBuilding = Object.entries(roomOccupancy).reduce((acc, [room, occupancy]) => {
+            if (room.startsWith('EXT') || room.startsWith('IUT') || room.startsWith('SPOR')) {
+                if (!acc['EXCEPTIONS']) {
+                    acc['EXCEPTIONS'] = [];
+                }
+                acc['EXCEPTIONS'].push({ room, occupancy });
+            } else {
+                const building = room[0]; // Le premier caractère représente le bâtiment (par ex. 'B' pour B203)
+                if (!acc[building]) {
+                    acc[building] = [];
+                }
+                acc[building].push({ room, occupancy });
+            }
+            return acc;
+        }, {});
+
+        // Trier les bâtiments par ordre alphabétique
+        const sortedBuildings = Object.keys(roomsByBuilding)
+            .filter(building => building !== 'EXCEPTIONS')
+            .sort((a, b) => a.localeCompare(b));
+
+        // Ajouter les exceptions à la fin
+        if (roomsByBuilding['EXCEPTIONS']) {
+            sortedBuildings.push('EXCEPTIONS');
+        }
+
+        // Trier les salles au sein de chaque bâtiment par ordre croissant
+        sortedBuildings.forEach(building => {
+            roomsByBuilding[building].sort((a, b) => a.room.localeCompare(b.room));
+        });
 
         // Afficher les résultats triés
-        console.log('✅ Taux d\'occupation des salles (triées par ordre croissant de taux d\'occupation) :\n');
-        sortedRooms.forEach(({ room, occupancyRate, occupancy }) => {
-            console.log(`Salle : ${room}`);
-            console.log(`  - Taux d'occupation            : ${occupancyRate}%`);
-            console.log(`  - Créneaux occupés (30mn)      : ${occupancy.totalOccupiedSlots}`);
-            console.log(`  - Créneaux disponibles (30mn)  : ${occupancy.totalSlots}`);
-            console.log('---------------------------------------------');
+        console.log('✅ Taux d\'occupation des salles (triées par bâtiment et par ordre croissant) :\n');
+
+        sortedBuildings.forEach(building => {
+            if (building === 'EXCEPTIONS') {
+                console.log('Salles exceptionnelles :');
+            } else {
+                console.log(`Bâtiment ${building} :`);
+            }
+            roomsByBuilding[building].forEach(({ room, occupancy }) => {
+                const occupancyRate = ((occupancy.totalOccupiedSlots / (occupancy.totalOccupiedSlots + occupancy.totalSlots)) * 100).toFixed(2);
+                console.log(`  - Salle : ${room}`);
+                console.log(`    - Taux d'occupation            : ${occupancyRate}%`);
+                console.log(`    - Créneaux occupés (30mn)      : ${occupancy.totalOccupiedSlots}`);
+                console.log(`    - Créneaux disponibles (30mn)  : ${occupancy.totalSlots}`);
+                console.log('---------------------------------------------');
+            });
         });
     }
 
