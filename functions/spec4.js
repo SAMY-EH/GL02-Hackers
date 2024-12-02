@@ -119,7 +119,7 @@ function findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime) {
     });
 
     // Afficher un message de confirmation et retourner les résultats regroupés et triés
-    console.log(`✅ Salles disponibles pour le créneau "${functions.transformDayName(dayCode)} de ${startTime} à ${endTime}":\n`);
+    console.log(`✅ Salles disponibles pour le créneau "${functions.transformDayName(dayCode)} de ${startTime} à ${endTime}" (triées par bâtiment et par ordre croissant) :\n`);
 
     sortedBuildings.forEach(building => {
         if (building === 'EXCEPTIONS') {
