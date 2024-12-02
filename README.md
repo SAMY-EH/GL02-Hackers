@@ -119,7 +119,7 @@ Tapez le numéro correspondant à la fonctionnalité souhaitée et suivez les in
 
 ---
 
-## Structure des fichiers 
+## Structure des fichiers
 
 ```bash
 /data                        # Répertoire contenant les données des cours triés par ordre alphabétique
