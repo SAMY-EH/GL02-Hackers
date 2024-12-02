@@ -9,8 +9,8 @@ Ce projet vise à optimiser l'utilisation des salles de l'Université de la Rép
 ## Table des matières
 
 - [Contexte](#contexte)
-- [Fonctionnalités fonctionnelles](#fonctionnalités-fonctionnelles)
-- [Fonctionnalités non fonctionnelles](#fonctionnalités-non-fonctionnelles)
+- [Exigences fonctionnelles](#Exigences-fonctionnelles)
+- [Exigences non fonctionnelles](#Exigences-non-fonctionnelles)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Utilisation](#utilisation)
@@ -28,7 +28,7 @@ L'Université Centrale de la République de Sealand (SRU) cherche à améliorer 
 
 ---
 
-## Fonctionnalités fonctionnelles
+## Exigences fonctionnelles
 
 ### **SPEC_01** : Recherche des salles pour un cours donné
 - Le logiciel doit permettre aux utilisateurs de rechercher les salles attribuées à un cours spécifique.
@@ -59,7 +59,7 @@ L'Université Centrale de la République de Sealand (SRU) cherche à améliorer 
 
 ---
 
-## Fonctionnalités non fonctionnelles
+## Exigences non fonctionnelles
 
 ### **SPEC_NF_01** : Simplicité d’utilisation
 - Le logiciel doit être facile à utiliser, même pour des utilisateurs non techniques. Il doit fournir des messages d'erreurs clairs en cas d’entrées incorrectes.
@@ -106,7 +106,7 @@ node main.js
 Lors du démarrage de l'application, un menu principal s'affiche, vous permettant de choisir l'une des fonctionnalités :
 
 - Recherche des salles pour un cours donné
-- Consultation de la capacité d’une salle
+- Consultation de la capacité maximale d’une salle
 - Vérification des disponibilités d'une salle
 - Recherche de salle disponible pour un créneau donné
 - Génération d’un fichier iCalendar
@@ -119,7 +119,7 @@ Tapez le numéro correspondant à la fonctionnalité souhaitée et suivez les in
 
 ---
 
-## Structure des fichiers
+## Structure des fichiers 
 
 ```bash
 /data                        # Répertoire contenant les données des cours triés par ordre alphabétique
