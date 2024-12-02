@@ -9,7 +9,7 @@
  *          Le logiciel doit permettre aux utilisateurs de rechercher les salles attribuées à un cours spécifique.
  *
  * @author Théo TORREILLES, Lucie GUÉRIN
- * @version 1.1
+ * @version 1.2
  * @date Décembre 2024
  *
  * @functions

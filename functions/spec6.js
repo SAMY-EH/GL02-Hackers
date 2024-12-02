@@ -8,7 +8,7 @@
  *          Le logiciel doit vérifier qu'aucune salle ne soit utilisée par deux cours différents au même créneau horaire.
  *
  * @author Théo TORREILLES, Julie VAN HOUDENHOVE
- * @version 1.1
+ * @version 1.2
  * @date Décembre 2024
  *
  * @functions
