@@ -66,9 +66,10 @@ function validateTime(time) {
 /**
  * Lit tous les fichiers edt.cru dans un répertoire et retourne les créneaux d'enseignement.
  * @param {*} directory Le répertoire contenant les fichiers edt.cru
+ * @param {*} [debug] Afficher les messages de débogage (par défaut : false)
  * @returns Les créneaux
  */
-function parseAllEdtFiles(directory) {
+function parseAllEdtFiles(directory, debug = false) {
     let allTimeSlots = [];
 
     // Lire le répertoire principal
@@ -79,13 +80,13 @@ function parseAllEdtFiles(directory) {
             if (fs.statSync(subDirPath).isDirectory()) {
                 const edtFilePath = path.join(subDirPath, 'edt.cru');
                 if (fs.existsSync(edtFilePath)) {
-                    console.log(`Analyse du fichier : ${edtFilePath}`);
+                    if (debug) console.log(`Analyse du fichier : ${edtFilePath}`);
                     const timeSlots = parseEdtFile(edtFilePath);
                     allTimeSlots = allTimeSlots.concat(timeSlots);
                 }
             }
         } catch (error) {
-            console.error(`Erreur lors de l'analyse du sous-répertoire ${subDir}:`, error);
+            if (debug) console.error(`Erreur lors de l'analyse du sous-répertoire ${subDir}:`, error);
         }
     });
 
@@ -95,14 +96,15 @@ function parseAllEdtFiles(directory) {
 /**
  * Lit un fichier edt.cru et retourne les créneaux
  * @param {*} filepath Le chemin du fichier edt.cru
+ * @param {*} [debug] Afficher les messages de débogage (par défaut : false)
  * @returns Les créneaux
  */
-function parseEdtFile(filepath) {
+function parseEdtFile(filepath, debug = false) {
     try {
         const data = fs.readFileSync(filepath, 'utf-8');
         return parseEdtData(data);
     } catch (error) {
-        console.error(`Erreur lors de la lecture du fichier ${filepath}:`, error);
+        if (debug) console.error(`Erreur lors de la lecture du fichier ${filepath}:`, error);
         return [];
     }
 }
@@ -110,9 +112,10 @@ function parseEdtFile(filepath) {
 /**
  * Analyse le contenu d'un fichier edt.cru en lignes de créneaux.
  * @param {*} data Le contenu du fichier edt.cru
+ * @param {*} [debug] Afficher les messages de débogage (par défaut : false)
  * @returns Les créneaux
  */
-function parseEdtData(data) {
+function parseEdtData(data, debug = false) {
     const lines = data.split('\n');
     let course = null;
     let timeSlots = [];
@@ -135,7 +138,7 @@ function parseEdtData(data) {
                 timeSlots = timeSlots.concat(newTimeSlots);
             }
         } else {
-            console.warn('Ligne ignorée :', line);
+            if (debug) console.warn('Ligne ignorée :', line);
         }
     });
 
@@ -146,9 +149,10 @@ function parseEdtData(data) {
  * Analyse une ligne de créneau et retourne un ou plusieurs objets représentant des créneaux.
  * @param {*} line La ligne de créneau
  * @param {*} course Le cours associé
+ * @param {*} [debug] Afficher les messages de débogage (par défaut : false)
  * @returns Les créneaux
  */
-function parseTimeSlot(line, course) {
+function parseTimeSlot(line, course, debug = false) {
     try {
         // Supprimer les caractères superflus et séparer les créneaux possibles par '/'
         const parts = line.trim().split('/');
@@ -177,7 +181,7 @@ function parseTimeSlot(line, course) {
 
         return timeSlots;
     } catch (error) {
-        console.error('Erreur lors de l\'analyse du créneau :', error.message);
+        if (debug) console.error('Erreur lors de l\'analyse du créneau :', error.message);
         return [];
     }
 }
@@ -186,9 +190,10 @@ function parseTimeSlot(line, course) {
  * Analyse un créneau de base.
  * @param {*} timeSlotString La chaîne de caractères représentant le créneau
  * @param {*} course Le cours associé
+ * @param {*} [debug] Afficher les messages de débogage (par défaut : false)
  * @returns L'objet créneau
  */
-function parseSingleTimeSlot(timeSlotString, course) {
+function parseSingleTimeSlot(timeSlotString, course, debug = false) {
     try {
         const parts = timeSlotString.trim().split(',');
         if (parts.length < 6) {
@@ -256,7 +261,7 @@ function parseSingleTimeSlot(timeSlotString, course) {
             room: room.trim()
         };
     } catch (error) {
-        console.error('Erreur lors de l\'analyse du créneau de base :', error.message);
+        if (debug) console.error('Erreur lors de l\'analyse du créneau de base :', error.message);
         return null;
     }
 }
@@ -265,9 +270,10 @@ function parseSingleTimeSlot(timeSlotString, course) {
  * Analyse un créneau additionnel en héritant les informations du créneau de base.
  * @param {*} part La partie de créneau additionnelle
  * @param {*} baseTimeSlot Le créneau de base
+ * @param {*} [debug] Afficher les messages de débogage (par défaut : false)
  * @returns L'objet créneau
  */
-function parseAdditionalTimeSlot(part, baseTimeSlot) {
+function parseAdditionalTimeSlot(part, baseTimeSlot, debug = false) {
     try {
         // On commence par cloner le créneau de base
         let timeSlot = { ...baseTimeSlot };
@@ -319,23 +325,17 @@ function parseAdditionalTimeSlot(part, baseTimeSlot) {
             return timeSlot;
         } else {
             // Si le créneau additionnel n'est pas valide, ignorer
-            console.warn('Créneau additionnel ignoré car il est incomplet ou invalide :', part);
+            if (debug) console.warn('Créneau additionnel ignoré car il est incomplet ou invalide :', part);
             return null;
         }
     } catch (error) {
-        console.error('Erreur lors de l\'analyse du créneau additionnel :', error.message);
+        if (debug) console.error('Erreur lors de l\'analyse du créneau additionnel :', error.message);
         return null;
     }
 }
 
-// Exporter les fonctions
+// Export des fonctions
 export {
-    validateDay,
-    validateTime,
     parseAllEdtFiles,
-    parseEdtFile,
-    parseEdtData,
-    parseTimeSlot,
-    parseSingleTimeSlot,
-    parseAdditionalTimeSlot
+    parseEdtFile
 }
