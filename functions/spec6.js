@@ -60,7 +60,7 @@ import * as parser from '../utility/parser.js';
  * @param {string} [endTime] (Optionnel) Heure de fin à vérifier (Ex.: '12:00')
  * @returns {Array} Liste des créneaux qui se chevauchent
  */
-function verifyRoomConflicts(directory, dayCode = null, startTime = null, endTime = null) {
+function verifyRoomConflicts(directory, dayCode = null, startTime = "8:00", endTime = "20:00") {
     // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
 

@@ -99,13 +99,13 @@ function findRoomAvailability(directory, roomName) {
     Object.entries(availableSlots).forEach(([day, slots]) => {
         if (slots.length > 0) {
             isRoomAvailable = true;
-            console.log(`Jour : ${functions.transformDayName(day)}`);
+            console.log(`${functions.transformDayName(day)}`);
             slots.forEach(slot => {
-                console.log(`  - Heure : ${slot.start} - ${slot.end}`);
+                console.log(`  - ${slot.start} - ${slot.end}`);
             });
             console.log('-----------------------------------');
         } else {
-            console.log(`Jour : ${functions.transformDayName(day)} - Aucun créneau libre`);
+            console.log(`${functions.transformDayName(day)} - Aucun créneau libre`);
             console.log('-----------------------------------');
         }
     });

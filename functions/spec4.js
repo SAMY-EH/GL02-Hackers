@@ -50,13 +50,25 @@ function findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime) {
     // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
 
+    // Convertir les heures de début et de fin du créneau à vérifier en minutes depuis minuit
+    const [inputStartHour, inputStartMinute] = startTime.split(':').map(Number);
+    const [inputEndHour, inputEndMinute] = endTime.split(':').map(Number);
+    const inputStart = inputStartHour * 60 + inputStartMinute;
+    const inputEnd = inputEndHour * 60 + inputEndMinute;
+
     // Collecter les salles qui ne sont pas disponibles pour le créneau donné
     const unavailableRooms = allTimeSlots
-        .filter(slot => slot.day === dayCode && (
-            (startTime >= slot.startTime && startTime < slot.endTime) ||
-            (endTime > slot.startTime && endTime <= slot.endTime) ||
-            (startTime <= slot.startTime && endTime >= slot.endTime)
-        ))
+        .filter(slot => slot.day === dayCode)
+        .filter(slot => {
+            // Convertir les heures de début et de fin du créneau existant en minutes depuis minuit
+            const [slotStartHour, slotStartMinute] = slot.startTime.split(':').map(Number);
+            const [slotEndHour, slotEndMinute] = slot.endTime.split(':').map(Number);
+            const slotStart = slotStartHour * 60 + slotStartMinute;
+            const slotEnd = slotEndHour * 60 + slotEndMinute;
+
+            // Vérifier si le créneau existant chevauche le créneau donné
+            return (inputStart < slotEnd && inputEnd > slotStart);
+        })
         .map(slot => slot.room);
 
     // Collecter toutes les salles possibles

@@ -29,7 +29,7 @@
  * - Les données sont extraites des fichiers edt.cru présents dans le répertoire spécifié.
  * - Assurez-vous que les dates de début et de fin sont correctement définies.
  * - Le fichier iCalendar généré est conforme à la norme RFC 5545.
- * - Le nom du fichier iCalendar généré par défaut est 'edt.ics'.
+ * - Le nom du fichier iCalendar généré par défaut est 'calendrier.ics'.
  * 
  * @remarks
  * - Assurez-vous que le répertoire contenant les fichiers edt.cru est correctement spécifié.   
@@ -51,7 +51,7 @@ import * as parser from '../utility/parser.js';
  * @param {Date} endDate La date de fin de la période (au format Date)
  * @param {string} calendarFileName Nom du fichier iCalendar à générer (ex. 'monCalendrier.ics')
  */
-function generateICalendarForCourses(directory, startDate, endDate, calendarFileName = 'edt.ics') {
+function generateICalendarForCourses(directory, startDate, endDate, calendarFileName = 'calendrier.ics') {
     // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
 
