@@ -9,7 +9,7 @@
  *          Les utilisateurs doivent pouvoir connaître les salles disponibles pour un créneau horaire donné.
  *
  * @author Théo TORREILLES, Julie VAN HOUDENHOVE, Lucie GUÉRIN
- * @version 1.1
+ * @version 1.2
  * @date Décembre 2024
  *
  * @functions
@@ -27,6 +27,8 @@
  * - Les données sont extraites des fichiers edt.cru présents dans le répertoire spécifié.
  * - La fonction prend en compte le chevauchement des créneaux pour déterminer les salles libres.
  * - Si aucune salle n'est disponible, des messages d'erreur appropriés sont affichés.
+ * - Les salles sont triées par bâtiment et par ordre alphabétique.
+ * - Les salles exceptionnelles (EXT, IUT, SPOR) sont regroupées à la fin de la liste.
  *
  * @remarks
  * - Assurez-vous que le répertoire des fichiers edt.cru est correctement défini.
@@ -83,10 +85,51 @@ function findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime) {
         return [];
     }
 
-    // Afficher un message de confirmation et retourner les résultats
+    // Regrouper les salles par bâtiment
+    const roomsByBuilding = availableRooms.reduce((acc, room) => {
+        // Vérifier les exceptions "EXT", "IUT" et "SPOR"
+        if (room.startsWith('EXT') || room.startsWith('IUT') || room.startsWith('SPOR')) {
+            if (!acc['EXCEPTIONS']) {
+                acc['EXCEPTIONS'] = [];
+            }
+            acc['EXCEPTIONS'].push(room);
+        } else {
+            const building = room[0]; // Le premier caractère représente le bâtiment (par ex. 'B' pour B203)
+            if (!acc[building]) {
+                acc[building] = [];
+            }
+            acc[building].push(room);
+        }
+        return acc;
+    }, {});
+
+    // Trier les bâtiments par ordre alphabétique
+    const sortedBuildings = Object.keys(roomsByBuilding)
+        .filter(building => building !== 'EXCEPTIONS')
+        .sort((a, b) => a.localeCompare(b));
+
+    // Ajouter les exceptions à la fin
+    if (roomsByBuilding['EXCEPTIONS']) {
+        sortedBuildings.push('EXCEPTIONS');
+    }
+
+    // Trier les salles au sein de chaque bâtiment par ordre croissant
+    sortedBuildings.forEach(building => {
+        roomsByBuilding[building].sort();
+    });
+
+    // Afficher un message de confirmation et retourner les résultats regroupés et triés
     console.log(`✅ Salles disponibles pour le créneau "${functions.transformDayName(dayCode)} de ${startTime} à ${endTime}":\n`);
-    availableRooms.forEach((room, index) => {
-        console.log(`Salle #${index + 1}: ${room}`);
+
+    sortedBuildings.forEach(building => {
+        if (building === 'EXCEPTIONS') {
+            console.log(`Salles exceptionnelles :`);
+        } else {
+            console.log(`Bâtiment ${building} :`);
+        }
+        roomsByBuilding[building].forEach((room, index) => {
+            console.log(`  - Salle #${index + 1}: ${room}`);
+        });
         console.log('-----------------------------------');
     });
 
