@@ -9,11 +9,11 @@
  *          Le logiciel doit permettre aux utilisateurs de rechercher les salles attribuées à un cours spécifique.
  *
  * @author Théo TORREILLES, Lucie GUÉRIN
- * @version 1.2
+ * @version 1.3
  * @date Décembre 2024
  *
  * @functions
- * - findRoomsForCourse(directory, courseName): Recherche les salles et créneaux associés à un cours donné, et les affiche.
+ * - findRoomsForCourse(directory, courseName, showResult): Recherche les salles et créneaux associés à un cours donné, et les affiche.
  * - groupBy(array, key): Regroupe les éléments d'un tableau par une clé spécifique.
  *
  * @dependencies
@@ -42,9 +42,10 @@ import * as parser from '../utility/parser.js';
  * Fonction pour rechercher les salles utilisées pour un cours donné
  * @param {string} directory Le répertoire contenant les fichiers edt.cru
  * @param {string} courseName Le nom du cours à rechercher
+ * @param {boolean} [showResult] Indique si les résultats doivent être affichés dans la console (par défaut : true)
  * @returns {Object} Une liste des salles attribuées au cours, regroupées par salle et par jour
  */
-function findRoomsForCourse(directory, courseName) {
+function findRoomsForCourse(directory, courseName, showResult = true) {
     // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
 
@@ -60,7 +61,7 @@ function findRoomsForCourse(directory, courseName) {
 
     // Si aucune salle n'est trouvée, retourner un message d'erreur
     if (roomsForCourse.length === 0) {
-        console.error(`❌ Erreur : Aucun cours nommé "${courseName}" n'a été trouvé dans le système. Vérifiez le nom du cours et réessayez.`);
+        if (showResult) console.error(`❌ Erreur : Aucun cours nommé "${courseName}" n'a été trouvé dans le système. Vérifiez le nom du cours et réessayez.`);
         return {};
     }
 
@@ -77,18 +78,20 @@ function findRoomsForCourse(directory, courseName) {
         }, {});
     });
 
-    // Afficher un message de confirmation et retourner les résultats
-    console.log(`✅ Salles trouvées pour le cours "${courseName}":\n`);
-    Object.entries(roomsGrouped).forEach(([room, days], index) => {
-        console.log(`Salle #${index + 1}: ${room}`);
-        Object.entries(days).forEach(([day, timeSlots]) => {
-            console.log(`  - Jour : ${functions.transformDayName(day)}`);
-            timeSlots.forEach(timeSlot => {
-                console.log(`    - Heures: ${timeSlot.startTime} - ${timeSlot.endTime}`);
+    if (showResult) {
+        // Afficher un message de confirmation et retourner les résultats
+        console.log(`✅ Salles trouvées pour le cours "${courseName}":\n`);
+        Object.entries(roomsGrouped).forEach(([room, days], index) => {
+            console.log(`Salle #${index + 1}: ${room}`);
+            Object.entries(days).forEach(([day, timeSlots]) => {
+                console.log(`  - Jour : ${functions.transformDayName(day)}`);
+                timeSlots.forEach(timeSlot => {
+                    console.log(`    - Heures: ${timeSlot.startTime} - ${timeSlot.endTime}`);
+                });
             });
+            console.log('-----------------------------------');
         });
-        console.log('-----------------------------------');
-    });
+    }
 
     return roomsGrouped;
 }
