@@ -5,15 +5,15 @@
  *              peut être spécifié pour filtrer les salles.
  *
  * @context Projet GL02 - Hackers
- *          SPEC_08 - Classement des salles par capacité
+ *          SPEC_08 - Classement des salles par capacité.
  *          Le logiciel doit permettre le classement des salles par leur capacité d’accueil (par exemple, combien de salles de 24 places sont disponibles).
  *
  * @author Théo TORREILLES, Julie VAN HOUDENHOVE
- * @version 1.1
+ * @version 1.2
  * @date Décembre 2024
  *
  * @functions
- * - classifyRoomsByCapacity(directory, ascending, minCapacity): Classe les salles en fonction de leur capacité,
+ * - classifyRoomsByCapacity(directory, ascending, minCapacity, showResult): Classe les salles en fonction de leur capacité,
  *   avec une option de tri croissant/décroissant et un nombre minimum de places.
  *
  * @dependencies
@@ -47,9 +47,10 @@ import * as parser from '../utility/parser.js';
  * @param {string} directory Le répertoire contenant les fichiers edt.cru
  * @param {boolean} ascending Tri croissant si true, décroissant sinon
  * @param {number} minCapacity Nombre de places minimum pour les salles à afficher (optionnel)
- * @returns {void}
+ * @param {boolean} [showResult] Indique si les résultats doivent être affichés dans la console (par défaut : true)
+ * @returns {Array} Une liste des salles classées par capacité
  */
-function classifyRoomsByCapacity(directory, ascending = true, minCapacity = 0) {
+function classifyRoomsByCapacity(directory, ascending = true, minCapacity = 0, showResult = true) {
     // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
 
@@ -72,25 +73,29 @@ function classifyRoomsByCapacity(directory, ascending = true, minCapacity = 0) {
 
     // Afficher les résultats
     if (filteredRooms.length === 0) {
-        console.error("❌ Aucune salle ne correspond aux critères spécifiés.");
+        if (showResult) console.error("❌ Aucune salle ne correspond aux critères spécifiés.");
         return;
     }
 
-    console.log(`✅ Classement des salles par capacité (min. ${minCapacity} places, ${ascending ? 'Croissant' : 'Décroissant'}) :\n`);
-    
-    // Regrouper les salles par capacité et les afficher
-    let currentCapacity = null;
-    filteredRooms.forEach(([room, capacity], index) => {
-        if (capacity !== currentCapacity) {
-            if (index > 0) {
-                console.log('-----------------------------------');
+    if (showResult) {
+        console.log(`✅ Classement des salles par capacité (min. ${minCapacity} places, ${ascending ? 'Croissant' : 'Décroissant'}) :\n`);
+
+        // Regrouper les salles par capacité et les afficher
+        let currentCapacity = null;
+        filteredRooms.forEach(([room, capacity], index) => {
+            if (capacity !== currentCapacity) {
+                if (index > 0) {
+                    console.log('-----------------------------------');
+                }
+                console.log(`Capacité : ${capacity}`);
+                currentCapacity = capacity;
             }
-            console.log(`Capacité : ${capacity}`);
-            currentCapacity = capacity;
-        }
-        console.log(`  - Salle : ${room}`);
-    });
-    console.log('-----------------------------------');
+            console.log(`  - Salle : ${room}`);
+        });
+        console.log('-----------------------------------');
+    }
+
+    return filteredRooms;
 }
 
 // Exporter la fonction pour une utilisation externe

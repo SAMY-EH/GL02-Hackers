@@ -9,11 +9,11 @@
  *          Les utilisateurs doivent pouvoir connaître les salles disponibles pour un créneau horaire donné.
  *
  * @author Théo TORREILLES, Julie VAN HOUDENHOVE, Lucie GUÉRIN
- * @version 1.2
+ * @version 1.3
  * @date Décembre 2024
  *
  * @functions
- * - findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime): Recherche les salles disponibles pour un créneau donné.
+ * - findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime, showResult): Recherche les salles disponibles pour un créneau donné.
  *
  * @dependencies
  * - Module personnalisé 'functions.js' : Fournit des fonctions utilitaires.
@@ -46,9 +46,10 @@ import * as parser from '../utility/parser.js';
  * @param {string} dayCode Le jour du créneau à vérifier ('L', 'MA', 'ME', 'J', 'V', 'S', 'D')
  * @param {string} startTime L'heure de début du créneau à vérifier (Ex. : '14:00')
  * @param {string} endTime L'heure de fin du créneau à vérifier (Ex. : '16:00')
+ * @param {boolean} [showResult] Indique si les résultats doivent être affichés dans la console (par défaut : true)
  * @returns {Array} Une liste des salles disponibles pour le créneau donné
  */
-function findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime) {
+function findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime, showResult = true) {
     // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
 
@@ -81,7 +82,7 @@ function findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime) {
 
     // Si aucune salle n'est disponible, retourner un message d'erreur
     if (availableRooms.length === 0) {
-        console.error(`❌ Aucun créneau libre n'a été trouvé pour le jour "${functions.transformDayName(dayCode)}" entre ${startTime} et ${endTime}.`);
+        if (showResult) console.error(`❌ Aucun créneau libre n'a été trouvé pour le jour "${functions.transformDayName(dayCode)}" entre ${startTime} et ${endTime}.`);
         return [];
     }
 
@@ -113,25 +114,38 @@ function findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime) {
         sortedBuildings.push('EXCEPTIONS');
     }
 
-    // Trier les salles au sein de chaque bâtiment par ordre croissant
+    // Trier les salles au sein de chaque bâtiment par ordre croissant (en utilisant un tri numérique approprié)
     sortedBuildings.forEach(building => {
-        roomsByBuilding[building].sort();
-    });
+        roomsByBuilding[building].sort((a, b) => {
+            const nameA = a.match(/\D+/)[0]; // Obtenir la partie non numérique (bâtiment)
+            const nameB = b.match(/\D+/)[0];
+            const numA = parseInt(a.match(/\d+/), 10) || 0; // Obtenir la partie numérique
+            const numB = parseInt(b.match(/\d+/), 10) || 0;
 
-    // Afficher un message de confirmation et retourner les résultats regroupés et triés
-    console.log(`✅ Salles disponibles pour le créneau "${functions.transformDayName(dayCode)} de ${startTime} à ${endTime}" (triées par bâtiment et par ordre croissant) :\n`);
-
-    sortedBuildings.forEach(building => {
-        if (building === 'EXCEPTIONS') {
-            console.log(`Salles exceptionnelles :`);
-        } else {
-            console.log(`Bâtiment ${building} :`);
-        }
-        roomsByBuilding[building].forEach((room, index) => {
-            console.log(`  - Salle #${index + 1}: ${room}`);
+            if (nameA !== nameB) {
+                return nameA.localeCompare(nameB); // Comparaison par nom de bâtiment
+            } else {
+                return numA - numB; // Comparaison numérique
+            }
         });
-        console.log('-----------------------------------');
     });
+
+    if (showResult) {
+        // Afficher un message de confirmation et retourner les résultats regroupés et triés
+        console.log(`✅ Salles disponibles pour le créneau "${functions.transformDayName(dayCode)} de ${startTime} à ${endTime}" (triées par bâtiment et par ordre croissant) :\n`);
+
+        sortedBuildings.forEach(building => {
+            if (building === 'EXCEPTIONS') {
+                console.log(`Salles exceptionnelles :`);
+            } else {
+                console.log(`Bâtiment ${building} :`);
+            }
+            roomsByBuilding[building].forEach((room, index) => {
+                console.log(`  - Salle #${index + 1}: ${room}`);
+            });
+            console.log('-----------------------------------');
+        });
+    }
 
     return availableRooms;
 }

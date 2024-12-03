@@ -9,11 +9,11 @@
  *          entre deux dates spécifiées, et ainsi l’intégrer à son propre calendrier.
  *
  * @author Théo TORREILLES, Julie VAN HOUDENHOVE
- * @version 1.1
+ * @version 1.2
  * @date Décembre 2024
  *
  * @functions
- * - generateICalendarForCourses(directory, startDate, endDate, calendarFileName): Génère un fichier iCalendar avec les cours présents dans le répertoire spécifié.
+ * - generateICalendarForCourses(directory, startDate, endDate, calendarFileName, showResult): Génère un fichier iCalendar avec les cours présents dans le répertoire spécifié.
  *
  * @dependencies
  * - Bibliothèque 'ical-generator' pour générer le fichier iCalendar.
@@ -50,8 +50,10 @@ import * as parser from '../utility/parser.js';
  * @param {Date} startDate La date de début de la période (au format Date)
  * @param {Date} endDate La date de fin de la période (au format Date)
  * @param {string} calendarFileName Nom du fichier iCalendar à générer (ex. 'monCalendrier.ics')
+ * @param {boolean} showResult Indique si les résultats doivent être affichés dans la console (par défaut : true)
+ * @returns {void} Le fichier iCalendar généré
  */
-function generateICalendarForCourses(directory, startDate, endDate, calendarFileName = 'calendrier.ics') {
+function generateICalendarForCourses(directory, startDate, endDate, calendarFileName = 'calendrier.ics', showResult = true) {
     // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
 
@@ -93,9 +95,9 @@ function generateICalendarForCourses(directory, startDate, endDate, calendarFile
     const calendarString = calendar.toString();
     try {
         fs.writeFileSync(calendarFileName, calendarString);
-        console.log(`✅ Fichier iCalendar généré avec succès : ${calendarFileName}`);
+        if (showResult) console.log(`✅ Fichier iCalendar généré avec succès : ${calendarFileName}`);
     } catch (error) {
-        console.error(`❌ Erreur lors de la sauvegarde du fichier iCalendar : ${error.message}`);
+        if (showResult) console.error(`❌ Erreur lors de la sauvegarde du fichier iCalendar : ${error.message}`);
     }
 }
 

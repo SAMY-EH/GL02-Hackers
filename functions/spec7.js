@@ -8,11 +8,11 @@
  *          Le système doit pouvoir générer une visualisation synthétique du taux d’occupation des salles sur une période donnée.
  *
  * @author Théo TORREILLES, Julie VAN HOUDENHOVE
- * @version 1.2
+ * @version 1.3
  * @date Décembre 2024
  *
  * @functions
- * - visualizeRoomOccupancy(directory, startDate, endDate): Génère une visualisation textuelle du taux d'occupation des salles
+ * - visualizeRoomOccupancy(directory, startDate, endDate, showResult): Génère une visualisation textuelle du taux d'occupation des salles
  *   sur une période spécifiée. Affiche également le nombre de créneaux occupés et disponibles pour chaque salle.
  *
  * @dependencies
@@ -48,6 +48,7 @@ import * as functions from '../utility/functions.js';
  * @param {Date} startDate La date de début de la période
  * @param {Date} endDate La date de fin de la période
  * @param {boolean} [showResult] Indique si les résultats doivent être affichés dans la console (par défaut : true)
+ * @returns {Object} Un objet contenant les données d'occupation des salles
  */
 function visualizeRoomOccupancy(directory, startDate, endDate, showResult = true) {
     // Heures d'ouverture des salles (par exemple, de 8h00 à 20h00)
@@ -59,7 +60,7 @@ function visualizeRoomOccupancy(directory, startDate, endDate, showResult = true
     const allTimeSlots = parser.parseAllEdtFiles(directory);
 
     if (allTimeSlots.length === 0) {
-        console.error('❌ Erreur : Aucune donnée d\'occupation de salle n\'est disponible dans le répertoire spécifié.');
+        if (showResult) console.error('❌ Erreur : Aucune donnée d\'occupation de salle n\'est disponible dans le répertoire spécifié.');
         return;
     }
 
@@ -104,12 +105,12 @@ function visualizeRoomOccupancy(directory, startDate, endDate, showResult = true
         });
     }
 
-    if (showResult) {
-        if (Object.keys(roomOccupancy).length === 0) {
-            console.error('❌ Erreur : Aucune salle n\'a été trouvée avec des données d\'occupation dans la période spécifiée.');
-            return;
-        }
+    if (Object.keys(roomOccupancy).length === 0) {
+        if (showResult) console.error('❌ Erreur : Aucune salle n\'a été trouvée avec des données d\'occupation dans la période spécifiée.');
+        return;
+    }
 
+    if (showResult) {
         // Regrouper les salles par bâtiment
         const roomsByBuilding = Object.entries(roomOccupancy).reduce((acc, [room, occupancy]) => {
             if (room.startsWith('EXT') || room.startsWith('IUT') || room.startsWith('SPOR')) {
