@@ -1,0 +1,15 @@
+{
+  "name": "gl02-hackers",
+  "version": "1.2.0",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "ical-generator": "^8.0.1"
+  },
+  "devDependencies": {
+    "jasmine": "^5.5.0"
+  }
+}
