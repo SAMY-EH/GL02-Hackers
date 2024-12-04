@@ -10,10 +10,30 @@ Ce projet vise à optimiser l'utilisation des salles de l'Université de la Rép
 
 - [Contexte](#contexte)
 - [Exigences fonctionnelles](#Exigences-fonctionnelles)
+  - [SPEC_01 : Recherche des salles pour un cours donné](#SPEC_01--Recherche-des-salles)
+  - [SPEC_02 : Consultation de la capacité d’une salle](#SPEC_02--Consultation-de-la-capacité)
+  - [SPEC_03 : Vérification des disponibilités d'une salle](#SPEC_03--Vérification-des-disponibilités)
+  - [SPEC_04 : Recherche de salle disponible pour un créneau donné](#SPEC_04--Recherche-de-salle-disponible-pour-un-créneau-donné)
+  - [SPEC_05 : Génération d’un fichier iCalendar](#SPEC_05--Génération-dun-fichier-iCalendar)
+  - [SPEC_06 : Vérification de la conformité des données](#SPEC_06--Vérification-de-la-conformité)
+  - [SPEC_07 : Visualisation du taux d’occupation des salles](#SPEC_07--Visualisation-du-taux)
+  - [SPEC_08 : Classement des salles par capacité](#SPEC_08--Classement-des-salles)
+  - [SPEC_09 : Consultation des salles sur ou sous-exploitées](#SPEC_09--Consultation-des-salles)
 - [Exigences non fonctionnelles](#Exigences-non-fonctionnelles)
+    - [SPEC_NF_01 : Simplicité d’utilisation](#SPEC_NF_01--Simplicité-dutilisation)
+  - [SPEC_NF_02 : Performance](#SPEC_NF_02--Performance)
+  - [SPEC_NF_03 : Compatibilité](#SPEC_NF_03--Compatibilité)
 - [Prérequis](#prérequis)
+- [Dépendances](#dépendances)
+    - [Dépendances du Projet](#dépendances-du-projet)
+    - [Liste des Dépendances Clés](#liste-des-dépendances-clés)
 - [Installation](#installation)
 - [Utilisation](#utilisation)
+    - [Exécution des fonctionnalités](#exécution-des-fonctionnalités)
+- [Tests Unitaires](#tests-unitaires)
+  - [Couverture des Tests Unitaires](#couverture-des-tests-unitaires)
+  - [Exécution des Tests](#exécution-des-tests)
+  - [Exemple d'Exécution d'un Test Spécifique](#exemple-dexécution-dun-test-spécifique)
 - [Structure des fichiers](#structure-des-fichiers)
 - [Remarque](#remarque)
 
@@ -81,6 +101,33 @@ Avant d'utiliser ce projet, assurez-vous d'avoir installé les outils suivants :
 
 ---
 
+## Dépendances
+Ce projet utilise plusieurs bibliothèques et modules pour assurer son bon fonctionnement. Les dépendances sont gérées via npm, ce qui facilite leur installation et leur mise à jour. Voici une liste des principales dépendances utilisées dans le projet :
+
+### Dépendances du Projet
+- **Node.js :** Le runtime JavaScript qui permet d'exécuter du code JavaScript côté serveur. 
+- **ical-generator :** Utilisé pour générer des fichiers iCalendar conformes à la norme RFC 5545. Cela permet de créer des calendriers facilement intégrables dans des outils comme Google Calendar, Outlook, etc. 
+- **fs (file system) :** Utilisé pour la lecture et l'écriture de fichiers, notamment pour traiter les données des emplois du temps et sauvegarder les fichiers générés.
+- **Jasmine :** Un framework de test pour JavaScript, utilisé pour écrire et exécuter des tests unitaires, garantissant la qualité des différentes fonctionnalités du projet.
+
+### Liste des Dépendances Clés
+```
+{
+    "dependencies": {
+        "ical-generator": "^3.0.0",  // Génération de fichiers iCalendar
+        "jest": "^27.0.0",           // Framework de test JavaScript
+        "fs": "^0.0.1-security"      // Module File System pour lire/écrire des fichiers
+    },
+    "devDependencies": {
+        "jasmine": "^4.0.0"          // Framework de test pour les tests unitaires
+    }
+}
+```
+
+Vous pouvez consulter le fichier `package.json` pour voir la liste complète des dépendances utilisées, ainsi que leurs versions exactes.
+
+---
+
 ## Installation
 
 Clonez le dépôt, puis installez les dépendances nécessaires :
@@ -119,6 +166,53 @@ Tapez le numéro correspondant à la fonctionnalité souhaitée et suivez les in
 
 ---
 
+## Tests Unitaires
+
+Les tests permettent de s'assurer que toutes les fonctionnalités fonctionnent comme prévu et sont conformes aux exigences définies. Les tests sont écrits en utilisant **Jasmine** pour fournir un cadre simple et efficace pour les tests.
+
+### Couverture des Tests Unitaires
+
+Chaque spécification principale du projet a des tests unitaires associés, qui vérifient les aspects critiques des fonctionnalités :
+
+- **SPEC_01 :** Vérifie si les salles sont correctement identifiées pour un cours spécifique.
+
+- **SPEC_02 :** Vérifie la capacité maximale d'une salle.
+
+- **SPEC_03 :** Vérifie les créneaux disponibles pour une salle spécifique.
+
+- **SPEC_04 :** Vérifie la recherche de salles disponibles pour un créneau donné.
+
+- **SPEC_05 :** Vérifie la génération correcte d'un fichier iCalendar conforme à la norme RFC 5545.
+
+- **SPEC_06 :** Vérifie l'absence de chevauchement entre les cours dans la même salle.
+
+- **SPEC_07 :** Vérifie le calcul du taux d'occupation des salles sur une période donnée.
+
+- **SPEC_08 :** Vérifie le classement des salles en fonction de leur capacité.
+
+- **SPEC_09 :** Vérifie la détection des salles sur ou sous-exploitées pour permettre une planification adéquate.
+
+### Exécution des Tests
+
+Les tests unitaires sont situés dans le répertoire `spec` et peuvent être exécutés en utilisant **Jasmine**. Assurez-vous d'avoir installé les dépendances nécessaires à l'aide de `npm install`.
+
+Pour exécuter tous les tests unitaires, utilisez la commande suivante :
+
+```bash
+npx jasmine
+```
+
+Chaque fichier de test contient plusieurs cas de test visant à vérifier le comportement attendu de la spécification concernée.
+
+### Exemple d'Exécution d'un Test Spécifique
+
+Pour exécuter un test spécifique, par exemple le test de **SPEC_04** (Recherche de salle disponible pour un créneau donné), utilisez la commande :
+
+```bash
+npx jasmine spec/spec4.spec.js
+```
+---
+
 ## Structure des fichiers
 
 ```bash
@@ -142,6 +236,17 @@ Tapez le numéro correspondant à la fonctionnalité souhaitée et suivez les in
   spec8.js                   # Classement des salles par capacité
   spec9.js                   # Consultation des salles sur ou sous-exploitées
 
+/spec                        # Répertoire contenant les tests unitaires
+  spec1.spec.js              # Tests pour SPEC_01 : Recherche des salles pour un cours donné
+  spec2.spec.js              # Tests pour SPEC_02 : Consultation de la capacité d'une salle
+  spec3.spec.js              # Tests pour SPEC_03 : Vérification des disponibilités d'une salle
+  spec4.spec.js              # Tests pour SPEC_04 : Recherche de salle disponible pour un créneau donné
+  spec5.spec.js              # Tests pour SPEC_05 : Génération d'un fichier iCalendar
+  spec6.spec.js              # Tests pour SPEC_06 : Vérification de la conformité des données
+  spec7.spec.js              # Tests pour SPEC_07 : Visualisation du taux d'occupation des salles
+  spec8.spec.js              # Tests pour SPEC_08 : Classement des salles par capacité
+  spec9.spec.js              # Tests pour SPEC_09 : Consultation des salles sur ou sous-exploitées
+
 /utility                     # Répertoire contenant des modules utilitaires
   functions.js               # Fonctions utilitaires (tri, transformation de jours, regroupement de données, etc...)
   parser.js                  # Analyse des fichiers edt.cru et extraction des créneaux
@@ -149,7 +254,6 @@ Tapez le numéro correspondant à la fonctionnalité souhaitée et suivez les in
 main.js                      # Point d'entrée du programme, avec menu principal pour sélectionner les fonctionnalités
 README.md                    # Documentation du projet
 ```
-
 ---
 
 ## Remarque 
