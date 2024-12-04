@@ -30,11 +30,12 @@ Ce projet vise à optimiser l'utilisation des salles de l'Université de la Rép
 - [Installation](#installation)
 - [Utilisation](#utilisation)
   - [Exécution des fonctionnalités](#exécution-des-fonctionnalités)
-- [Tests Unitaires](#tests-unitaires)
+- [Tests unitaires](#tests-unitaires)
   - [Couverture des tests unitaires](#couverture-des-tests-unitaires)
   - [Exécution des tests](#exécution-des-tests)
   - [Exemple d'exécution d'un test spécifique](#exemple-dexécution-dun-test-spécifique)
 - [Structure des fichiers](#structure-des-fichiers)
+- [Couverture du cahier des charges](#couverture-du-cahier-des-charges)
 - [Remarque](#remarque)
 
 ---
@@ -109,7 +110,6 @@ Ce projet utilise plusieurs bibliothèques et modules pour assurer son bon fonct
 
 - **Node.js :** Le runtime JavaScript qui permet d'exécuter du code JavaScript côté serveur. 
 - **ical-generator :** Utilisé pour générer des fichiers iCalendar conformes à la norme RFC 5545. Cela permet de créer des calendriers facilement intégrables dans des outils comme Google Calendar, Outlook, etc. 
-- **fs (file system) :** Utilisé pour la lecture et l'écriture de fichiers, notamment pour traiter les données des emplois du temps et sauvegarder les fichiers générés.
 - **Jasmine :** Un framework de test pour JavaScript, utilisé pour écrire et exécuter des tests unitaires, garantissant la qualité des différentes fonctionnalités du projet.
 
 ### Liste des dépendances clés
@@ -166,7 +166,7 @@ Tapez le numéro correspondant à la fonctionnalité souhaitée et suivez les in
 
 ---
 
-## Tests Unitaires
+## Tests unitaires
 
 Les tests permettent de s'assurer que toutes les fonctionnalités fonctionnent comme prévu et sont conformes aux exigences définies. Les tests sont écrits en utilisant **Jasmine** pour fournir un cadre simple et efficace pour les tests.
 
@@ -260,6 +260,12 @@ package-lock.json            # Fichier de gestion des versions exactes des dépe
 package.json                 # Fichier de configuration contenant les informations sur le projet et ses dépendances
 README.md                    # Documentation du projet
 ```
+
+---
+
+## Couverture du cahier des charges
+
+Le projet couvre l'ensemble des exigences définies dans le cahier des charges, en répondant aux besoins fonctionnels ainsi qu'aux exigences non fonctionnelles. Chaque fonctionnalité a été soigneusement développée et testée pour garantir sa conformité aux spécifications, assurant ainsi une expérience utilisateur optimale et une gestion efficace des ressources de l'Université de Sealand.
 
 ---
 
