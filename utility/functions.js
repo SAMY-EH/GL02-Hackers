@@ -8,13 +8,14 @@
  * @context Projet GL02 - Hackers
  *
  * @author Théo TORREILLES
- * @version 1.1
+ * @version 1.2
  * @date Décembre 2024
  *
  * @functions
  * - getDayCode(dayOfWeek): Obtient le code de jour correspondant à un indice de jour de la semaine.
  * - sortDays(daysArray): Trie un tableau de jours selon un ordre prédéfini.
  * - transformDayName(dayCode): Transforme une abréviation de jour en nom complet.
+ * - normalizeTime(timeString): Normalise l'heure au format 'HH:mm'.
  *
  * @dependencies
  * - Aucune dépendance externe. Ce fichier fonctionne avec des modules JavaScript natifs et est destiné à être utilisé avec d'autres modules du projet.
@@ -79,11 +80,22 @@ function transformDayName(dayCode) {
     return dayNames[dayCode] || dayCode;
 }
 
+/**
+ * Fonction utilitaire pour normaliser l'heure au format 'HH:mm'
+ * @param {string} timeString L'heure au format 'H:mm' ou 'HH:mm'
+ * @returns {string} L'heure au format 'HH:mm'
+ */
+function normalizeTime(timeString) {
+    const [hour, minute] = timeString.split(':').map(Number);
+    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+}
+
 // Export des fonctions
 export {
     dayOrder,
     dayNames,
     getDayCode,
     sortDays,
-    transformDayName
+    transformDayName,
+    normalizeTime
 };

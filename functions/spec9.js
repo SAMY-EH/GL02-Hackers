@@ -8,11 +8,11 @@
  *          Le gestionnaire des locaux doit pouvoir identifier quelles salles sont sous-exploitées ou surexploitées afin de planifier des ajustements futurs.
  *
  * @author Théo TORREILLES, Julie VAN HOUDENHOVE
- * @version 1.1
+ * @version 1.2
  * @date Décembre 2024
  *
  * @functions
- * - analyzeOverUnderUtilizedRooms(directory, startDate, endDate, underUtilizationThreshold, overUtilizationThreshold):
+ * - analyzeOverUnderUtilizedRooms(directory, startDate, endDate, underUtilizationThreshold, overUtilizationThreshold, showResult):
  *   Identifie les salles sous-exploitées et sur-exploitées pour une période donnée et les affiche triées par ordre croissant de taux d'occupation.
  *
  * @dependencies
@@ -48,16 +48,18 @@ import { visualizeRoomOccupancy } from './spec7.js';
  * @param {Date} endDate La date de fin de la période d'analyse
  * @param {number} underUtilizationThreshold Le seuil de sous-utilisation en pourcentage (par défaut 20%)
  * @param {number} overUtilizationThreshold Le seuil de sur-utilisation en pourcentage (par défaut 80%)
+ * @param {boolean} [showResult] Indique si les résultats doivent être affichés dans la console (par défaut : true)
+ * @returns {void} Affiche les salles sous-exploitées et sur-exploitées pour la période spécifiée
  */
-function analyzeOverUnderUtilizedRooms(directory, startDate, endDate, underUtilizationThreshold = 20, overUtilizationThreshold = 80) {
+function analyzeOverUnderUtilizedRooms(directory, startDate, endDate, underUtilizationThreshold = 20, overUtilizationThreshold = 80, showResult = true) {
     // Obtenir les données d'occupation des salles en appelant visualizeRoomOccupancy
-    console.log('🔍 Analyse des taux d\'occupation des salles pour la période spécifiée...\n');
+    if (showResult) console.log('🔍 Analyse des taux d\'occupation des salles pour la période spécifiée...\n');
     
     // Utilisation de `visualizeRoomOccupancy` avec un flag pour obtenir les données sans les afficher.
     const roomOccupancy = visualizeRoomOccupancy(directory, startDate, endDate, false);
 
     if (!roomOccupancy || Object.keys(roomOccupancy).length === 0) {
-        console.error('❌ Aucune donnée d\'occupation de salle n\'a été trouvée pour la période spécifiée.');
+        if (showResult) console.error('❌ Aucune donnée d\'occupation de salle n\'a été trouvée pour la période spécifiée.');
         return;
     }
 
@@ -81,26 +83,28 @@ function analyzeOverUnderUtilizedRooms(directory, startDate, endDate, underUtili
     underUtilizedRooms.sort((a, b) => a.occupancyRate - b.occupancyRate);
     overUtilizedRooms.sort((a, b) => a.occupancyRate - b.occupancyRate);
 
-    // Afficher les résultats des salles sous-exploitées
-    if (underUtilizedRooms.length > 0) {
-        console.log(`📉 Salles sous-exploitées (moins de ${underUtilizationThreshold}% d'occupation) :\n`);
-        underUtilizedRooms.forEach(({ room, occupancyRate }) => {
-            console.log(`  - Salle : ${room}, Taux d'occupation : ${occupancyRate.toFixed(2)}%`);
-        });
-    } else {
-        console.log(`✅ Aucune salle sous-exploitée détectée (en dessous de ${underUtilizationThreshold}% d'occupation).`);
-    }
+    if (showResult) {
+        // Afficher les résultats des salles sous-exploitées
+        if (underUtilizedRooms.length > 0) {
+            console.log(`📉 Salles sous-exploitées (moins de ${underUtilizationThreshold}% d'occupation) :\n`);
+            underUtilizedRooms.forEach(({ room, occupancyRate }) => {
+                console.log(`  - Salle : ${room}, Taux d'occupation : ${occupancyRate.toFixed(2)}%`);
+            });
+        } else {
+            console.log(`✅ Aucune salle sous-exploitée détectée (en dessous de ${underUtilizationThreshold}% d'occupation).`);
+        }
 
-    console.log('-----------------------------------');
+        console.log('-----------------------------------');
 
-    // Afficher les résultats des salles sur-exploitées
-    if (overUtilizedRooms.length > 0) {
-        console.log(`📈 Salles sur-exploitées (plus de ${overUtilizationThreshold}% d'occupation) :\n`);
-        overUtilizedRooms.forEach(({ room, occupancyRate }) => {
-            console.log(`  - Salle : ${room}, Taux d'occupation : ${occupancyRate.toFixed(2)}%`);
-        });
-    } else {
-        console.log(`✅ Aucune salle sur-exploitée détectée (au-dessus de ${overUtilizationThreshold}% d'occupation).`);
+        // Afficher les résultats des salles sur-exploitées
+        if (overUtilizedRooms.length > 0) {
+            console.log(`📈 Salles sur-exploitées (plus de ${overUtilizationThreshold}% d'occupation) :\n`);
+            overUtilizedRooms.forEach(({ room, occupancyRate }) => {
+                console.log(`  - Salle : ${room}, Taux d'occupation : ${occupancyRate.toFixed(2)}%`);
+            });
+        } else {
+            console.log(`✅ Aucune salle sur-exploitée détectée (au-dessus de ${overUtilizationThreshold}% d'occupation).`);
+        }
     }
 }
 

@@ -9,11 +9,11 @@
  *          Les utilisateurs doivent pouvoir consulter la capacité maximale d’une salle en termes de nombre de places.
  *
  * @author Théo TORREILLES, Lucie GUÉRIN
- * @version 1.1
+ * @version 1.2
  * @date Décembre 2024
  *
  * @functions
- * - findRoomCapacity(directory, roomName): Recherche et affiche la capacité d'une salle donnée.
+ * - findRoomCapacity(directory, roomName, showResult): Recherche et affiche la capacité d'une salle donnée.
  *
  * @dependencies
  * - Module personnalisé 'parser.js' : Utilisé pour analyser les fichiers edt.cru et extraire les créneaux d'enseignement.
@@ -38,9 +38,10 @@ import * as parser from '../utility/parser.js';
  * Fonction pour consulter la capacité d'une salle donnée
  * @param {string} directory Le répertoire contenant les fichiers edt.cru
  * @param {string} roomName Le nom de la salle à consulter
+ * @param {boolean} [showResult] Indique si les résultats doivent être affichés dans la console (par défaut : true)
  * @returns {Object} Une information sur la capacité de la salle
  */
-function findRoomCapacity(directory, roomName) {
+function findRoomCapacity(directory, roomName, showResult = true) {
     // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
 
@@ -49,7 +50,7 @@ function findRoomCapacity(directory, roomName) {
 
     // Si aucune information sur la salle n'est trouvée, retourner un message d'erreur
     if (roomsInfo.length === 0) {
-        console.error(`❌ Erreur : La salle nommée "${roomName}" n'a pas été trouvée dans le système. Vérifiez le nom de la salle et réessayez.`);
+        if(showResult) console.error(`❌ Erreur : La salle nommée "${roomName}" n'a pas été trouvée dans le système. Vérifiez le nom de la salle et réessayez.`);
         return {};
     }
 
@@ -58,13 +59,15 @@ function findRoomCapacity(directory, roomName) {
     const maxCapacity = Math.max(...capacities);
 
     if (isNaN(maxCapacity)) {
-        console.error(`❌ Erreur : La capacité pour la salle "${roomName}" n'a pas pu être déterminée.`);
+        if(showResult) console.error(`❌ Erreur : La capacité pour la salle "${roomName}" n'a pas pu être déterminée.`);
         return {};
     }
 
     // Afficher la capacité de la salle
-    console.log(`✅ Capacité de la salle "${roomName}":`);
-    console.log(`  - Nombre de places : ${maxCapacity}`);
+    if (showResult) {
+        console.log(`✅ Capacité de la salle "${roomName}":`);
+        console.log(`  - Nombre de places : ${maxCapacity}`);
+    }
 
     return {
         roomName: roomName,
