@@ -238,7 +238,7 @@ npx jasmine spec/spec1.spec.js
   spec9.js                   # Consultation des salles sur ou sous-exploitées
 
 /spec                        # Répertoire contenant les tests unitaires
-  /support                   # Répertoire contenant Jasmine
+  /support
     jasmine.mjs              # Fichier de configuration et de support pour l'exécution des tests Jasmine
   spec1.spec.js              # Tests pour SPEC_01 : Recherche des salles pour un cours donné
   spec2.spec.js              # Tests pour SPEC_02 : Consultation de la capacité d'une salle
