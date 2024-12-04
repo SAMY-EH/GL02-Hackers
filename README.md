@@ -42,8 +42,7 @@ Ce projet vise à optimiser l'utilisation des salles de l'Université de la Rép
 
 ## Contexte
 
-L'Université SRU souhaite améliorer la gestion de ses locaux et l’organisation des usagers à travers un système de suivi d'occupation des salles. Le système actuel, basé sur un format de données CRU, contient des informations hebdomadaires sur les créneaux
-d’enseignement et les salles utilisées.
+L'Université SRU souhaite améliorer la gestion de ses locaux et l’organisation des usagers à travers un système de suivi d'occupation des salles. Le système actuel, basé sur un format de données CRU, contient des informations hebdomadaires sur les créneaux d’enseignement et les salles utilisées.
 
 Cependant, l'université manquait d’un outil pour faciliter la consultation des emplois du temps et optimiser l’utilisation des locaux. C'est dans ce cadre que notre équipe a implémenté une solution informatique afin de palier à ce problème. Notre système est conçu pour répondre aux objectifs suivants :
 
@@ -125,7 +124,7 @@ Ce projet utilise plusieurs bibliothèques et modules pour assurer son bon fonct
 ### Dépendances du projet
 
 - **Node.js :** Le runtime JavaScript qui permet d'exécuter du code JavaScript côté serveur.
-- **ical-generator :** Utilisé pour générer des fichiers iCalendar conformes à la norme RFC 5545. Cela permet de créer des calendriers facilement intégrables dans des outils comme Google Calendar, Outlook, etc.
+- **ical-generator :** Utilisé pour générer des fichiers iCalendar conformes à la norme RFC 5545. Cela permet de créer des calendriers facilement intégrables dans des outils comme Google Calendar, Outlook, etc...
 - **Jasmine :** Un framework de test pour JavaScript, utilisé pour écrire et exécuter des tests unitaires, garantissant la qualité des différentes fonctionnalités du projet.
 
 ### Liste des dépendances clés
