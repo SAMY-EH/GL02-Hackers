@@ -42,40 +42,53 @@ Ce projet vise à optimiser l'utilisation des salles de l'Université de la Rép
 
 ## Contexte
 
-L'Université Centrale de la République de Sealand (SRU) cherche à améliorer la gestion de l'occupation de ses salles de cours. Le système est conçu pour permettre :
+L'Université SRU souhaite améliorer la gestion de ses locaux et l’organisation des usagers à travers un système de suivi d'occupation des salles. Le système actuel, basé sur un format de données CRU, contient des informations hebdomadaires sur les créneaux
+d’enseignement et les salles utilisées.
 
-1. Aux étudiants et enseignants de vérifier la disponibilité des salles et d'organiser des sessions de travail.
-2. Aux gestionnaires de locaux d'identifier les salles sous-exploitées et sur-exploitées afin de planifier des ajustements futurs.
+Cependant, l'université manquait d’un outil pour faciliter la consultation des emplois du temps et optimiser l’utilisation des locaux. C'est dans ce cadre que notre équipe a implémenté une solution informatique afin de palier à ce problème. Notre système est conçu pour répondre aux objectifs suivants :
+
+1. Permettre aux étudiants et enseignants de vérifier la disponibilité des salles et d'organiser des sessions de travail.
+2. Permettre aux gestionnaires de locaux d'identifier les salles sous-exploitées et sur-exploitées afin de planifier des ajustements futurs.
+3. Générer des fichiers d'agenda au format iCalendar pour un usage personnel.
 
 ---
 
 ## Exigences fonctionnelles
 
 ### **SPEC_01** : Recherche des salles pour un cours donné
+
 - Le logiciel doit permettre aux utilisateurs de rechercher les salles attribuées à un cours spécifique.
 
 ### **SPEC_02** : Consultation de la capacité d’une salle
+
 - Les utilisateurs doivent pouvoir consulter la capacité maximale d’une salle en termes de nombre de places.
 
 ### **SPEC_03** : Vérification des disponibilités d'une salle
+
 - Le logiciel doit permettre de vérifier les moments où une salle spécifique est libre durant la semaine pour permettre du travail collaboratif.
 
 ### **SPEC_04** : Recherche de salle disponible pour un créneau donné
+
 - Les utilisateurs doivent pouvoir connaître les salles disponibles pour un créneau horaire donné.
 
 ### **SPEC_05** : Génération d’un fichier iCalendar
+
 - Le logiciel doit permettre aux utilisateurs de générer un fichier iCalendar (conforme à la norme RFC 5545) pour les cours auxquels ils participent, entre deux dates spécifiées, et ainsi l’intégrer à son propre calendrier.
 
 ### **SPEC_06** : Vérification de la conformité des données
+
 - Le logiciel doit vérifier qu'aucune salle ne soit utilisée par deux cours différents au même créneau horaire.
 
 ### **SPEC_07** : Visualisation du taux d’occupation des salles
+
 - Le système doit pouvoir générer une visualisation synthétique du taux d’occupation des salles sur une période donnée.
 
 ### **SPEC_08** : Classement des salles par capacité
+
 - Le logiciel doit permettre le classement des salles par leur capacité d’accueil (par exemple, combien de salles de 24 places sont disponibles).
 
 ### **SPEC_09** : Consultation des salles sur ou sous-exploitées
+
 - Le gestionnaire des locaux doit pouvoir identifier quelles salles sont sous-exploitées ou surexploitées afin de planifier des ajustements futurs.
 
 ---
@@ -83,12 +96,15 @@ L'Université Centrale de la République de Sealand (SRU) cherche à améliorer 
 ## Exigences non fonctionnelles
 
 ### **SPEC_NF_01** : Simplicité d’utilisation
+
 - Le logiciel doit être facile à utiliser, même pour des utilisateurs non techniques. Il doit fournir des messages d'erreurs clairs en cas d’entrées incorrectes.
 
 ### **SPEC_NF_02** : Performance
+
 - Le système doit fournir des réponses aux requêtes en temps réel, avec un délai maximal de 2 secondes pour les opérations de recherche et de génération de fichiers.
 
 ### **SPEC_NF_03** : Compatibilité
+
 - Le fichier iCalendar généré doit être compatible avec les principaux logiciels de gestion d’agendas (Google Calendar, Outlook, etc.).
 
 ---
@@ -108,11 +124,12 @@ Ce projet utilise plusieurs bibliothèques et modules pour assurer son bon fonct
 
 ### Dépendances du projet
 
-- **Node.js :** Le runtime JavaScript qui permet d'exécuter du code JavaScript côté serveur. 
-- **ical-generator :** Utilisé pour générer des fichiers iCalendar conformes à la norme RFC 5545. Cela permet de créer des calendriers facilement intégrables dans des outils comme Google Calendar, Outlook, etc. 
+- **Node.js :** Le runtime JavaScript qui permet d'exécuter du code JavaScript côté serveur.
+- **ical-generator :** Utilisé pour générer des fichiers iCalendar conformes à la norme RFC 5545. Cela permet de créer des calendriers facilement intégrables dans des outils comme Google Calendar, Outlook, etc.
 - **Jasmine :** Un framework de test pour JavaScript, utilisé pour écrire et exécuter des tests unitaires, garantissant la qualité des différentes fonctionnalités du projet.
 
 ### Liste des dépendances clés
+
 ```
 {
     "dependencies": {
@@ -209,7 +226,7 @@ Chaque fichier de test contient plusieurs cas de test visant à vérifier le com
 Pour exécuter un test spécifique, par exemple le test de **SPEC_04** (Recherche de salle disponible pour un créneau donné), utilisez la commande :
 
 ```bash
-npx jasmine spec/spec1.spec.js
+npx jasmine spec/spec4.spec.js
 ```
 
 ---
@@ -269,6 +286,6 @@ Le projet couvre l'ensemble des exigences définies dans le cahier des charges, 
 
 ---
 
-## Remarque 
+## Remarque
 
 Le projet est en cours de développement et peut être sujet à des ajouts de fonctionnalités ainsi qu'à des corrections de bugs dans les versions futures. Pour toute contribution ou rapport de problème, n'hésitez pas à ouvrir une issue ou une pull request sur le dépôt.
