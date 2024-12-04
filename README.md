@@ -20,20 +20,20 @@ Ce projet vise à optimiser l'utilisation des salles de l'Université de la Rép
   - [SPEC_08 : Classement des salles par capacité](#SPEC_08--Classement-des-salles-par-capacité)
   - [SPEC_09 : Consultation des salles sur ou sous-exploitées](#SPEC_09--Consultation-des-salles-sur-ou-sous-exploitées)
 - [Exigences non fonctionnelles](#Exigences-non-fonctionnelles)
-    - [SPEC_NF_01 : Simplicité d’utilisation](#SPEC_NF_01--Simplicité-dutilisation)
+  - [SPEC_NF_01 : Simplicité d’utilisation](#SPEC_NF_01--Simplicité-dutilisation)
   - [SPEC_NF_02 : Performance](#SPEC_NF_02--Performance)
   - [SPEC_NF_03 : Compatibilité](#SPEC_NF_03--Compatibilité)
 - [Prérequis](#prérequis)
 - [Dépendances](#dépendances)
-    - [Dépendances du Projet](#dépendances-du-projet)
-    - [Liste des Dépendances Clés](#liste-des-dépendances-clés)
+  - [Dépendances du projet](#dépendances-du-projet)
+  - [Liste des dépendances clés](#liste-des-dépendances-clés)
 - [Installation](#installation)
 - [Utilisation](#utilisation)
-    - [Exécution des fonctionnalités](#exécution-des-fonctionnalités)
+  - [Exécution des fonctionnalités](#exécution-des-fonctionnalités)
 - [Tests Unitaires](#tests-unitaires)
-  - [Couverture des Tests Unitaires](#couverture-des-tests-unitaires)
-  - [Exécution des Tests](#exécution-des-tests)
-  - [Exemple d'Exécution d'un Test Spécifique](#exemple-dexécution-dun-test-spécifique)
+  - [Couverture des tests unitaires](#couverture-des-tests-unitaires)
+  - [Exécution des tests](#exécution-des-tests)
+  - [Exemple d'exécution d'un test spécifique](#exemple-dexécution-dun-test-spécifique)
 - [Structure des fichiers](#structure-des-fichiers)
 - [Remarque](#remarque)
 
@@ -102,24 +102,24 @@ Avant d'utiliser ce projet, assurez-vous d'avoir installé les outils suivants :
 ---
 
 ## Dépendances
+
 Ce projet utilise plusieurs bibliothèques et modules pour assurer son bon fonctionnement. Les dépendances sont gérées via npm, ce qui facilite leur installation et leur mise à jour. Voici une liste des principales dépendances utilisées dans le projet :
 
-### Dépendances du Projet
+### Dépendances du projet
+
 - **Node.js :** Le runtime JavaScript qui permet d'exécuter du code JavaScript côté serveur. 
 - **ical-generator :** Utilisé pour générer des fichiers iCalendar conformes à la norme RFC 5545. Cela permet de créer des calendriers facilement intégrables dans des outils comme Google Calendar, Outlook, etc. 
 - **fs (file system) :** Utilisé pour la lecture et l'écriture de fichiers, notamment pour traiter les données des emplois du temps et sauvegarder les fichiers générés.
 - **Jasmine :** Un framework de test pour JavaScript, utilisé pour écrire et exécuter des tests unitaires, garantissant la qualité des différentes fonctionnalités du projet.
 
-### Liste des Dépendances Clés
+### Liste des dépendances clés
 ```
 {
     "dependencies": {
-        "ical-generator": "^3.0.0",  // Génération de fichiers iCalendar
-        "jest": "^27.0.0",           // Framework de test JavaScript
-        "fs": "^0.0.1-security"      // Module File System pour lire/écrire des fichiers
+      "ical-generator": "^8.0.1"  // Génération de fichiers iCalendar
     },
     "devDependencies": {
-        "jasmine": "^4.0.0"          // Framework de test pour les tests unitaires
+      "jasmine": "^5.5.0"         // Framework de test pour les tests unitaires
     }
 }
 ```
@@ -170,7 +170,7 @@ Tapez le numéro correspondant à la fonctionnalité souhaitée et suivez les in
 
 Les tests permettent de s'assurer que toutes les fonctionnalités fonctionnent comme prévu et sont conformes aux exigences définies. Les tests sont écrits en utilisant **Jasmine** pour fournir un cadre simple et efficace pour les tests.
 
-### Couverture des Tests Unitaires
+### Couverture des tests unitaires
 
 Chaque spécification principale du projet a des tests unitaires associés, qui vérifient les aspects critiques des fonctionnalités :
 
@@ -192,7 +192,7 @@ Chaque spécification principale du projet a des tests unitaires associés, qui 
 
 - **SPEC_09 :** Vérifie la détection des salles sur ou sous-exploitées pour permettre une planification adéquate.
 
-### Exécution des Tests
+### Exécution des tests
 
 Les tests unitaires sont situés dans le répertoire `spec` et peuvent être exécutés en utilisant **Jasmine**. Assurez-vous d'avoir installé les dépendances nécessaires à l'aide de `npm install`.
 
@@ -204,13 +204,14 @@ npx jasmine
 
 Chaque fichier de test contient plusieurs cas de test visant à vérifier le comportement attendu de la spécification concernée.
 
-### Exemple d'Exécution d'un Test Spécifique
+### Exemple d'exécution d'un test spécifique
 
 Pour exécuter un test spécifique, par exemple le test de **SPEC_04** (Recherche de salle disponible pour un créneau donné), utilisez la commande :
 
 ```bash
-npx jasmine spec/spec4.spec.js
+npx jasmine spec/spec1.spec.js
 ```
+
 ---
 
 ## Structure des fichiers
@@ -237,6 +238,8 @@ npx jasmine spec/spec4.spec.js
   spec9.js                   # Consultation des salles sur ou sous-exploitées
 
 /spec                        # Répertoire contenant les tests unitaires
+  /support                   # Répertoire contenant Jasmine
+    jasmine.mjs              # Fichier de configuration et de support pour l'exécution des tests Jasmine
   spec1.spec.js              # Tests pour SPEC_01 : Recherche des salles pour un cours donné
   spec2.spec.js              # Tests pour SPEC_02 : Consultation de la capacité d'une salle
   spec3.spec.js              # Tests pour SPEC_03 : Vérification des disponibilités d'une salle
@@ -251,9 +254,13 @@ npx jasmine spec/spec4.spec.js
   functions.js               # Fonctions utilitaires (tri, transformation de jours, regroupement de données, etc...)
   parser.js                  # Analyse des fichiers edt.cru et extraction des créneaux
 
+.gitignore                   # Fichier listant les fichiers et dossiers à ignorer par Git lors des commits (par exemple, node_modules)
 main.js                      # Point d'entrée du programme, avec menu principal pour sélectionner les fonctionnalités
+package-lock.json            # Fichier de gestion des versions exactes des dépendances pour npm
+package.json                 # Fichier de configuration contenant les informations sur le projet et ses dépendances
 README.md                    # Documentation du projet
 ```
+
 ---
 
 ## Remarque 
