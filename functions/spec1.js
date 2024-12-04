@@ -86,7 +86,7 @@ function findRoomsForCourse(directory, courseName, showResult = true) {
             Object.entries(days).forEach(([day, timeSlots]) => {
                 console.log(`  - Jour : ${functions.transformDayName(day)}`);
                 timeSlots.forEach(timeSlot => {
-                    console.log(`    - Heures: ${timeSlot.startTime} - ${timeSlot.endTime}`);
+                    console.log(`    - Heures : ${timeSlot.startTime} - ${timeSlot.endTime}`);
                 });
             });
             console.log('-----------------------------------');

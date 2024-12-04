@@ -141,7 +141,7 @@ function findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime, s
                 console.log(`Bâtiment ${building} :`);
             }
             roomsByBuilding[building].forEach((room, index) => {
-                console.log(`  - Salle #${index + 1}: ${room}`);
+                console.log(`  - Salle #${index + 1} : ${room}`);
             });
             console.log('-----------------------------------');
         });

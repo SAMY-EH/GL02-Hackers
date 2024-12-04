@@ -65,7 +65,7 @@ function findRoomCapacity(directory, roomName, showResult = true) {
 
     // Afficher la capacité de la salle
     if (showResult) {
-        console.log(`✅ Capacité de la salle "${roomName}":`);
+        console.log(`✅ Capacité de la salle "${roomName}" :`);
         console.log(`  - Nombre de places : ${maxCapacity}`);
     }
 

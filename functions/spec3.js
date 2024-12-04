@@ -100,7 +100,7 @@ function findRoomAvailability(directory, roomName, showResult = true) {
     if (showResult) {
         // Affichage des créneaux disponibles
         let isRoomAvailable = false; // Indicateur pour vérifier si la salle est libre à un moment quelconque
-        console.log(`✅ Créneaux libres pour la salle "${roomName}":\n`);
+        console.log(`✅ Créneaux libres pour la salle "${roomName}" :\n`);
         Object.entries(availableSlots).forEach(([day, slots]) => {
             if (slots.length > 0) {
                 isRoomAvailable = true;
