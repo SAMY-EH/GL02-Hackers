@@ -445,7 +445,7 @@ function executeSpec6() {
                 // Appeler la fonction spécifique de spec6 pour vérifier les chevauchements
                 try {
                     const directory = './data';
-                    spec6.checkDataConformity(directory, dayCode, startTime, endTime);
+                    spec6.verifyRoomConflicts(directory, dayCode, startTime, endTime);
                 } catch (error) {
                     console.error('❌ Erreur lors de la vérification de la conformité des données :', error);
                 }
