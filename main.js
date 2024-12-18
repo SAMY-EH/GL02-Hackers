@@ -294,13 +294,14 @@ function executeSpec5() {
     console.log('\n--- SPEC_05 : Génération d’un fichier iCalendar ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    const dateRegex = /^\d{2}-\d{2}$/; // Regex for validating dates in "MM-DD" format
+    // Regex pour valider les dates au format "MM-DD"
+    const dateRegex = /^\d{2}-\d{2}$/;
     const fileNameRegex = /^[a-zA-Z0-9_\-\.]+\.ics$/;
 
-    // Get the current year
+    // Obtenir l'année en cours
     const currentYear = new Date().getFullYear();
 
-    // Ask for the start date in "MM-DD" format
+    // Demander la date de début au format "MM-DD"
     rl.question('Entrez la date de début (Ex. : 12-02) : ', (startDateInput) => {
         if (startDateInput.toLowerCase() === '*') {
             promptUser();
@@ -320,7 +321,7 @@ function executeSpec5() {
             return;
         }
 
-        // Ask for the end date in "MM-DD" format
+        // Demander la date de fin au format "MM-DD"
         rl.question('Entrez la date de fin (Ex. : 12-08) : ', (endDateInput) => {
             if (endDateInput.toLowerCase() === '*') {
                 promptUser();
@@ -340,24 +341,25 @@ function executeSpec5() {
                 return;
             }
 
-            // Ask for the iCalendar file name (optional)
+            // Demander le nom du fichier iCalendar à générer (optionnel)
             rl.question('Entrez le nom du fichier iCalendar (laissez vide pour utiliser "calendrier.ics") : ', (calendarFileName) => {
                 if (calendarFileName.toLowerCase() === '*') {
                     promptUser();
                     return;
                 }
 
+                // Utiliser le nom par défaut si l'utilisateur n'a rien saisi
                 let finalCalendarFileName = calendarFileName.trim() === '' ? 'calendrier.ics' : calendarFileName;
-
+                // Vérifier si le nom de fichier est valide
                 if (!fileNameRegex.test(finalCalendarFileName)) {
                     console.log('❌ Nom de fichier invalide. Veuillez entrer un nom valide (ex.: calendrier.ics).');
                     executeSpec5();
                     return;
                 }
-
-                const directory = './data';
+                // Appeler la fonction spécifique de spec5 pour générer le fichier iCalendar
+                const directory = './data'; // Dossier contenant les fichiers edt.cru
                 spec5.generateICalendarForCourses(directory, startDate, endDate, finalCalendarFileName);
-
+                // Inviter l'utilisateur à appuyer sur Entrée pour retourner au menu principal
                 rl.question('\nAppuyez sur Entrée pour continuer...', () => {
                     promptUser();
                 });
@@ -464,15 +466,15 @@ function executeSpec7() {
     console.log('\n--- SPEC_07 : Visualisation du taux d’occupation des salles ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    const dateRegex = /^\d{2}-\d{2}$/; // Regex for validating dates in "MM-DD" format
+    const dateRegex = /^\d{2}-\d{2}$/; // Regex pour vérifier le format de la date
 
-    // Get the current year
+    // Obtenir l'année en cours
     const currentYear = new Date().getFullYear();
 
-    // Ask for the start date in "MM-DD" format
+    // Demander la date de début au format "MM-DD"
     rl.question('Entrez la date de début (Ex. : 12-02) : ', (startDateInput) => {
         if (startDateInput.toLowerCase() === '*') {
-            promptUser();
+            promptUser();  // Retourner au menu principal
             return;
         }
 
@@ -489,10 +491,10 @@ function executeSpec7() {
             return;
         }
 
-        // Ask for the end date in "MM-DD" format
+        // Demander la date de fin au format "MM-DD"
         rl.question('Entrez la date de fin (Ex. : 12-08) : ', (endDateInput) => {
             if (endDateInput.toLowerCase() === '*') {
-                promptUser();
+                promptUser(); // Retourner au menu principal
                 return;
             }
 
@@ -509,9 +511,11 @@ function executeSpec7() {
                 return;
             }
 
-            const directory = './data';
+            // Appeler la fonction spécifique de spec7 pour visualiser le taux d'occupation des salles
+            const directory = './data';// Dossier contenant les fichiers edt.cru
             spec7.visualizeRoomOccupancy(directory, startDate, endDate);
 
+            // Inviter l'utilisateur à appuyer sur Entrée pour retourner au menu principal
             rl.question('\nAppuyez sur Entrée pour continuer...', () => {
                 promptUser();
             });
@@ -584,16 +588,15 @@ function executeSpec9() {
     console.log('\n--- SPEC_09 : Consultation des salles sur ou sous-exploitées ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    const dateRegex = /^\d{2}-\d{2}$/; // Regex for validating dates in "MM-DD" format
-    const percentageRegex = /^(100|[1-9]?\d)$/; // Regex for validating percentages (0-100)
-
-    // Get the current year
+    const dateRegex = /^\d{2}-\d{2}$/; // Regex pour valider le format de la date
+    const percentageRegex = /^(100|[1-9]?\d)$/; // Regex pour valider les seuils (doit être un nombre entier compris entre 0 et 100)
+    // Obtenir l'année en cours
     const currentYear = new Date().getFullYear();
 
-    // Ask for the start date in "MM-DD" format
+    // Demander la date de début au format "MM-DD"
     rl.question('Entrez la date de début (Ex. : 12-02) : ', (startDateInput) => {
         if (startDateInput.toLowerCase() === '*') {
-            promptUser();
+            promptUser(); // Retourner au menu principal
             return;
         }
 
@@ -610,10 +613,10 @@ function executeSpec9() {
             return;
         }
 
-        // Ask for the end date in "MM-DD" format
+        // Entrez la date de fin au format "MM-DD"
         rl.question('Entrez la date de fin (Ex. : 12-08) : ', (endDateInput) => {
             if (endDateInput.toLowerCase() === '*') {
-                promptUser();
+                promptUser(); // Retourner au menu principal
                 return;
             }
 
@@ -630,39 +633,45 @@ function executeSpec9() {
                 return;
             }
 
-            // Ask for the under-utilization threshold (optional)
+            // Demander le seuil de sous-utilisation
             rl.question('Entrez le seuil de sous-utilisation (0-100, par défaut 20%) : ', (underUtilizationInput) => {
                 if (underUtilizationInput.trim() === '*') {
                     promptUser();
                     return;
                 }
 
+                // Vérifier la saisie du seuil de sous-utilisation
                 if (underUtilizationInput.trim() !== '' && !percentageRegex.test(underUtilizationInput)) {
                     console.log('❌ Seuil de sous-utilisation invalide. Veuillez entrer un nombre entre 0 et 100.');
                     executeSpec9();
                     return;
                 }
 
+                // Si le seuil est vide, définir par défaut à 20, sinon convertir en nombre
                 const underUtilizationThreshold = underUtilizationInput.trim() === '' ? 20 : parseInt(underUtilizationInput, 10);
 
-                // Ask for the over-utilization threshold (optional)
+                // Demander le seuil de sur-utilisation
                 rl.question('Entrez le seuil de sur-utilisation (0-100, par défaut 80%) : ', (overUtilizationInput) => {
                     if (overUtilizationInput.trim() === '*') {
-                        promptUser();
+                        promptUser(); // Retourner au menu principal
                         return;
                     }
 
+                    // Vérifier la saisie du seuil de sur-utilisation
                     if (overUtilizationInput.trim() !== '' && !percentageRegex.test(overUtilizationInput)) {
                         console.log('❌ Seuil de sur-utilisation invalide. Veuillez entrer un nombre entre 0 et 100.');
                         executeSpec9();
                         return;
                     }
 
+                    // Si le seuil est vide, définir par défaut à 80, sinon convertir en nombre
                     const overUtilizationThreshold = overUtilizationInput.trim() === '' ? 80 : parseInt(overUtilizationInput, 10);
 
-                    const directory = './data';
+                    // Appeler la fonction spécifique de spec9 pour analyser les salles sur ou sous-exploitées
+                    const directory = './data'; // Dossier contenant les fichiers edt.cru
                     spec9.analyzeOverUnderUtilizedRooms(directory, startDate, endDate, underUtilizationThreshold, overUtilizationThreshold);
 
+                    // Inviter l'utilisateur à appuyer sur Entrée pour retourner au menu principal
                     rl.question('\nAppuyez sur Entrée pour continuer...', () => {
                         promptUser();
                     });
