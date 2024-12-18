@@ -232,8 +232,11 @@ function executeSpec4() {
 
     // Demander le jour du créneau
     rl.question('Entrez le jour du créneau (L, MA, ME, J, V, S, D) : ', (dayCode) => {
+        // Convertir le jour en majuscules pour la validation
+        dayCode = dayCode.toUpperCase();
+
         // Vérifier si l'utilisateur veut revenir au menu principal
-        if (dayCode.toLowerCase() === '*') {
+        if (dayCode === '*') {
             promptUser(); // Retourner au menu principal
         } else if (!dayCodeRegex.test(dayCode)) {
             console.log('❌ Jour invalide. Veuillez réessayer.');
@@ -382,6 +385,8 @@ function executeSpec6() {
 
         let dayCode = null;
         if (dayCodeInput.trim() !== '') {
+            // Convertir le jour en majuscules pour la validation
+            dayCodeInput = dayCodeInput.toUpperCase();
             const dayCodeRegex = /^(L|MA|ME|J|V|S|D)$/;
             if (!dayCodeRegex.test(dayCodeInput.trim())) {
                 console.log('❌ Jour invalide. Veuillez entrer un jour valide (L, MA, ME, J, V, S, D).');
@@ -402,7 +407,7 @@ function executeSpec6() {
             if (startTimeInput.trim() !== '') {
                 const timeRegex = /^([01]?\d|2[0-3]):[0-5]\d$/;
                 if (!timeRegex.test(startTimeInput.trim())) {
-                    console.log('❌ Heure de début invalide. Veuillez entrer une heure au format HH:MM.');
+                    console.log('❌ Heure de début invalide. Veuillez entrer une heure au format "HH:MM".');
                     executeSpec6();
                     return;
                 }
@@ -420,7 +425,7 @@ function executeSpec6() {
                 if (endTimeInput.trim() !== '') {
                     const timeRegex = /^([01]?\d|2[0-3]):[0-5]\d$/;
                     if (!timeRegex.test(endTimeInput.trim())) {
-                        console.log('❌ Heure de fin invalide. Veuillez entrer une heure au format HH:MM.');
+                        console.log('❌ Heure de fin invalide. Veuillez entrer une heure au format "HH:MM".');
                         executeSpec6();
                         return;
                     }
@@ -432,17 +437,17 @@ function executeSpec6() {
                 const [endHour, endMinute] = endTime.split(':').map(Number);
 
                 if (startHour > endHour || (startHour === endHour && startMinute >= endMinute)) {
-                    console.log('❌ Heure de début doit être inférieure à l\'heure de fin. Veuillez réessayer.');
+                    console.log('❌ L\'heure de début doit être inférieure à l\'heure de fin. Veuillez réessayer.');
                     executeSpec6();
                     return;
                 }
 
                 // Appeler la fonction spécifique de spec6 pour vérifier les chevauchements
                 try {
-                    const directory = './data'; // Dossier contenant les fichiers edt.cru
+                    const directory = './data';
                     spec6.verifyRoomConflicts(directory, dayCode, startTime, endTime);
                 } catch (error) {
-                    console.error('❌ Une erreur est survenue lors de la vérification des conflits :', error.message);
+                    console.error('❌ Erreur lors de la vérification de la conformité des données :', error);
                 }
 
                 // Inviter l'utilisateur à appuyer sur Entrée pour retourner au menu principal
