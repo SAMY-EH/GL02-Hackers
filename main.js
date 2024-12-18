@@ -291,45 +291,47 @@ function executeSpec5() {
     console.log('\n--- SPEC_05 : Génération d’un fichier iCalendar ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    // Regex pour valider les dates au format "YYYY-MM-DD"
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    // Regex pour valider le nom du fichier (ne doit pas contenir de caractères interdits)
+    // Regex pour valider les dates au format "MM-DD"
+    const dateRegex = /^\d{2}-\d{2}$/;
     const fileNameRegex = /^[a-zA-Z0-9_\-\.]+\.ics$/;
 
-    // Demander la date de début au format "YYYY-MM-DD"
-    rl.question('Entrez la date de début (Ex. : 2024-12-02) : ', (startDateInput) => {
+    // Obtenir l'année en cours
+    const currentYear = new Date().getFullYear();
+
+    // Demander la date de début au format "MM-DD"
+    rl.question('Entrez la date de début (Ex. : 12-02) : ', (startDateInput) => {
         if (startDateInput.toLowerCase() === '*') {
-            promptUser(); // Retourner au menu principal
+            promptUser();
             return;
         }
 
         if (!dateRegex.test(startDateInput)) {
-            console.log('❌ Date de début invalide. Veuillez entrer une date au format "YYYY-MM-DD".');
+            console.log('❌ Date de début invalide. Veuillez entrer une date au format "MM-DD".');
             executeSpec5();
             return;
         }
 
-        const startDate = new Date(startDateInput);
+        const startDate = new Date(`${currentYear}-${startDateInput}`);
         if (isNaN(startDate)) {
             console.log('❌ Date de début invalide. Veuillez réessayer.');
             executeSpec5();
             return;
         }
 
-        // Demander la date de fin au format "YYYY-MM-DD"
-        rl.question('Entrez la date de fin (Ex. : 2024-12-02) : ', (endDateInput) => {
+        // Demander la date de fin au format "MM-DD"
+        rl.question('Entrez la date de fin (Ex. : 12-08) : ', (endDateInput) => {
             if (endDateInput.toLowerCase() === '*') {
-                promptUser(); // Retourner au menu principal
+                promptUser();
                 return;
             }
 
             if (!dateRegex.test(endDateInput)) {
-                console.log('❌ Date de fin invalide. Veuillez entrer une date au format "YYYY-MM-DD".');
+                console.log('❌ Date de fin invalide. Veuillez entrer une date au format "MM-DD".');
                 executeSpec5();
                 return;
             }
 
-            const endDate = new Date(endDateInput);
+            const endDate = new Date(`${currentYear}-${endDateInput}`);
             if (isNaN(endDate) || endDate < startDate) {
                 console.log('❌ Date de fin invalide ou antérieure à la date de début. Veuillez réessayer.');
                 executeSpec5();
@@ -339,24 +341,21 @@ function executeSpec5() {
             // Demander le nom du fichier iCalendar à générer (optionnel)
             rl.question('Entrez le nom du fichier iCalendar (laissez vide pour utiliser "calendrier.ics") : ', (calendarFileName) => {
                 if (calendarFileName.toLowerCase() === '*') {
-                    promptUser(); // Retourner au menu principal
+                    promptUser();
                     return;
                 }
 
                 // Utiliser le nom par défaut si l'utilisateur n'a rien saisi
                 let finalCalendarFileName = calendarFileName.trim() === '' ? 'calendrier.ics' : calendarFileName;
-
                 // Vérifier si le nom de fichier est valide
                 if (!fileNameRegex.test(finalCalendarFileName)) {
                     console.log('❌ Nom de fichier invalide. Veuillez entrer un nom valide (ex.: calendrier.ics).');
                     executeSpec5();
                     return;
                 }
-
                 // Appeler la fonction spécifique de spec5 pour générer le fichier iCalendar
                 const directory = './data'; // Dossier contenant les fichiers edt.cru
                 spec5.generateICalendarForCourses(directory, startDate, endDate, finalCalendarFileName);
-
                 // Inviter l'utilisateur à appuyer sur Entrée pour retourner au menu principal
                 rl.question('\nAppuyez sur Entrée pour continuer...', () => {
                     promptUser();
@@ -462,41 +461,45 @@ function executeSpec7() {
     console.log('\n--- SPEC_07 : Visualisation du taux d’occupation des salles ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    // Demander la date de début au format "YYYY-MM-DD"
-    rl.question('Entrez la date de début (Ex. : 2024-12-02) : ', (startDateInput) => {
+    const dateRegex = /^\d{2}-\d{2}$/; // Regex pour vérifier le format de la date
+
+    // Obtenir l'année en cours
+    const currentYear = new Date().getFullYear();
+
+    // Demander la date de début au format "MM-DD"
+    rl.question('Entrez la date de début (Ex. : 12-02) : ', (startDateInput) => {
         if (startDateInput.toLowerCase() === '*') {
-            promptUser(); // Retourner au menu principal
+            promptUser();  // Retourner au menu principal
             return;
         }
 
-        const dateRegex = /^\d{4}-\d{2}-\d{2}$/; // Regex pour vérifier le format de la date
         if (!dateRegex.test(startDateInput)) {
-            console.log('❌ Date de début invalide. Veuillez entrer une date au format YYYY-MM-DD.');
+            console.log('❌ Date de début invalide. Veuillez entrer une date au format "MM-DD".');
             executeSpec7();
             return;
         }
 
-        const startDate = new Date(startDateInput);
+        const startDate = new Date(`${currentYear}-${startDateInput}`);
         if (isNaN(startDate)) {
             console.log('❌ Date de début invalide. Veuillez réessayer.');
             executeSpec7();
             return;
         }
 
-        // Demander la date de fin au format "YYYY-MM-DD"
-        rl.question('Entrez la date de fin (Ex. : 2024-12-08) : ', (endDateInput) => {
+        // Demander la date de fin au format "MM-DD"
+        rl.question('Entrez la date de fin (Ex. : 12-08) : ', (endDateInput) => {
             if (endDateInput.toLowerCase() === '*') {
                 promptUser(); // Retourner au menu principal
                 return;
             }
 
             if (!dateRegex.test(endDateInput)) {
-                console.log('❌ Date de fin invalide. Veuillez entrer une date au format YYYY-MM-DD.');
+                console.log('❌ Date de fin invalide. Veuillez entrer une date au format "MM-DD".');
                 executeSpec7();
                 return;
             }
 
-            const endDate = new Date(endDateInput);
+            const endDate = new Date(`${currentYear}-${endDateInput}`);
             if (isNaN(endDate) || endDate < startDate) {
                 console.log('❌ Date de fin invalide ou antérieure à la date de début. Veuillez réessayer.');
                 executeSpec7();
@@ -504,7 +507,7 @@ function executeSpec7() {
             }
 
             // Appeler la fonction spécifique de spec7 pour visualiser le taux d'occupation des salles
-            const directory = './data'; // Dossier contenant les fichiers edt.cru
+            const directory = './data';// Dossier contenant les fichiers edt.cru
             spec7.visualizeRoomOccupancy(directory, startDate, endDate);
 
             // Inviter l'utilisateur à appuyer sur Entrée pour retourner au menu principal
@@ -580,56 +583,55 @@ function executeSpec9() {
     console.log('\n--- SPEC_09 : Consultation des salles sur ou sous-exploitées ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    // Regex pour valider la date au format "YYYY-MM-DD"
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    const dateRegex = /^\d{2}-\d{2}$/; // Regex pour valider le format de la date
+    const percentageRegex = /^(100|[1-9]?\d)$/; // Regex pour valider les seuils (doit être un nombre entier compris entre 0 et 100)
+    // Obtenir l'année en cours
+    const currentYear = new Date().getFullYear();
 
-    // Demander la date de début au format "YYYY-MM-DD"
-    rl.question('Entrez la date de début (Ex. : 2024-12-02) : ', (startDateInput) => {
-        if (startDateInput.trim() === '*') {
+    // Demander la date de début au format "MM-DD"
+    rl.question('Entrez la date de début (Ex. : 12-02) : ', (startDateInput) => {
+        if (startDateInput.toLowerCase() === '*') {
             promptUser(); // Retourner au menu principal
             return;
         }
 
         if (!dateRegex.test(startDateInput)) {
-            console.log('❌ Date de début invalide. Veuillez entrer la date au format "YYYY-MM-DD".');
+            console.log('❌ Date de début invalide. Veuillez entrer une date au format "MM-DD".');
             executeSpec9();
             return;
         }
 
-        const startDate = new Date(startDateInput);
+        const startDate = new Date(`${currentYear}-${startDateInput}`);
         if (isNaN(startDate)) {
             console.log('❌ Date de début invalide. Veuillez réessayer.');
             executeSpec9();
             return;
         }
 
-        // Demander la date de fin au format "YYYY-MM-DD"
-        rl.question('Entrez la date de fin (Ex. : 2024-12-08) : ', (endDateInput) => {
-            if (endDateInput.trim() === '*') {
+        // Entrez la date de fin au format "MM-DD"
+        rl.question('Entrez la date de fin (Ex. : 12-08) : ', (endDateInput) => {
+            if (endDateInput.toLowerCase() === '*') {
                 promptUser(); // Retourner au menu principal
                 return;
             }
 
             if (!dateRegex.test(endDateInput)) {
-                console.log('❌ Date de fin invalide. Veuillez entrer la date au format "YYYY-MM-DD".');
+                console.log('❌ Date de fin invalide. Veuillez entrer une date au format "MM-DD".');
                 executeSpec9();
                 return;
             }
 
-            const endDate = new Date(endDateInput);
+            const endDate = new Date(`${currentYear}-${endDateInput}`);
             if (isNaN(endDate) || endDate < startDate) {
                 console.log('❌ Date de fin invalide ou antérieure à la date de début. Veuillez réessayer.');
                 executeSpec9();
                 return;
             }
 
-            // Regex pour valider les seuils (doit être un nombre entier compris entre 0 et 100)
-            const percentageRegex = /^(100|[1-9]?\d)$/;
-
             // Demander le seuil de sous-utilisation
             rl.question('Entrez le seuil de sous-utilisation (0-100, par défaut 20%) : ', (underUtilizationInput) => {
                 if (underUtilizationInput.trim() === '*') {
-                    promptUser(); // Retourner au menu principal
+                    promptUser();
                     return;
                 }
 
