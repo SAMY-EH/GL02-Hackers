@@ -48,10 +48,10 @@ function findRoomCapacity(directory, roomName, showResult = true) {
     // Vérifier si la salle existe et collecter les informations sur la capacité
     const roomsInfo = allTimeSlots.filter(timeSlot => timeSlot.room.toLowerCase() === roomName.toLowerCase());
 
-    // Si aucune information sur la salle n'est trouvée, retourner un message d'erreur
+    // Si aucune information sur la salle n'est trouvée, retourner null
     if (roomsInfo.length === 0) {
-        if(showResult) console.error(`❌ Erreur : La salle nommée "${roomName}" n'a pas été trouvée dans le système. Vérifiez le nom de la salle et réessayez.`);
-        return {};
+        if (showResult) console.error(`❌ Erreur : Aucune information trouvée pour la salle "${roomName}".`);
+        return null;
     }
 
     // Regrouper par capacité, pour s'assurer que nous avons la capacité maximale mentionnée pour la salle
@@ -59,8 +59,8 @@ function findRoomCapacity(directory, roomName, showResult = true) {
     const maxCapacity = Math.max(...capacities);
 
     if (isNaN(maxCapacity)) {
-        if(showResult) console.error(`❌ Erreur : La capacité pour la salle "${roomName}" n'a pas pu être déterminée.`);
-        return {};
+        if (showResult) console.error(`❌ Erreur : La capacité pour la salle "${roomName}" n'a pas pu être déterminée.`);
+        return null;
     }
 
     // Afficher la capacité de la salle

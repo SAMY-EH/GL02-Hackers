@@ -46,19 +46,14 @@ import * as parser from '../utility/parser.js';
  * @returns {Object} Une liste des créneaux libres disponibles pour la salle
  */
 function findRoomAvailability(directory, roomName, showResult = true) {
-    // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
-
-    // Récupérer les créneaux de la salle demandée
     const bookedSlots = allTimeSlots.filter(timeSlot => timeSlot.room.toLowerCase() === roomName.toLowerCase());
 
-    // Si aucun créneau réservé n'est trouvé, afficher un message indiquant que la salle est introuvable
     if (bookedSlots.length === 0) {
         if (showResult) console.error(`❌ Erreur : La salle nommée "${roomName}" n'a pas été trouvée dans le système. Vérifiez le nom de la salle et réessayez.`);
-        return {};
+        return null;
     }
 
-    // Définir les créneaux horaires disponibles par jour (de 8h à 20h)
     const availableSlots = {};
     functions.dayOrder.forEach(day => {
         availableSlots[day] = [
@@ -66,7 +61,6 @@ function findRoomAvailability(directory, roomName, showResult = true) {
         ];
     });
 
-    // Supprimer les créneaux réservés pour chaque jour
     bookedSlots.forEach(slot => {
         const day = slot.day;
         const startTime = functions.normalizeTime(slot.startTime);
@@ -80,10 +74,8 @@ function findRoomAvailability(directory, roomName, showResult = true) {
                 const availableEnd = functions.normalizeTime(availableSlot.end);
 
                 if (startTime >= availableEnd || endTime <= availableStart) {
-                    // Pas de chevauchement, le créneau reste tel quel
                     updatedSlots.push(availableSlot);
                 } else {
-                    // Il y a chevauchement, on crée de nouveaux créneaux si nécessaire
                     if (availableStart < startTime) {
                         updatedSlots.push({ start: availableStart, end: startTime });
                     }
@@ -98,8 +90,7 @@ function findRoomAvailability(directory, roomName, showResult = true) {
     });
 
     if (showResult) {
-        // Affichage des créneaux disponibles
-        let isRoomAvailable = false; // Indicateur pour vérifier si la salle est libre à un moment quelconque
+        let isRoomAvailable = false;
         console.log(`✅ Créneaux libres pour la salle "${roomName}" :\n`);
         Object.entries(availableSlots).forEach(([day, slots]) => {
             if (slots.length > 0) {
@@ -115,7 +106,6 @@ function findRoomAvailability(directory, roomName, showResult = true) {
             }
         });
 
-        // Si aucun créneau n'est disponible durant la semaine
         if (!isRoomAvailable) {
             console.error(`❌ La salle "${roomName}" est entièrement occupée et ne possède aucun créneau libre cette semaine.`);
         }

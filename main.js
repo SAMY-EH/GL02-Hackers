@@ -51,12 +51,15 @@ import * as spec6 from './functions/spec6.js';
 import * as spec7 from './functions/spec7.js';
 import * as spec8 from './functions/spec8.js';
 import * as spec9 from './functions/spec9.js';
+import * as functions from './utility/functions.js'; // Add this line to import the functions module
 
 // Créer une interface pour lire les entrées utilisateur dans la console
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
+
+// Rest of the code remains unchanged
 
 /**
  * Fonction pour afficher le menu principal
@@ -128,30 +131,43 @@ function handleUserChoice(choice) {
 /**
  * Fonction pour exécuter la SPEC_01 : Recherche des salles pour un cours donné
  */
+// main.js
 function executeSpec1() {
     console.log('\n--- SPEC_01 : Recherche des salles pour un cours donné ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    // Regex pour valider le nom du cours
     const courseNameRegex = /^[A-Za-z]+[0-9]*$/;
 
-    // Demander le nom du cours
     rl.question('Entrez le nom du cours (Ex. : MATH02) : ', (courseName) => {
-        // Vérifier si l'utilisateur veut revenir au menu principal
         if (courseName.toLowerCase() === '*') {
-            promptUser(); // Retourner au menu principal
+            promptUser();
         } else if (!courseNameRegex.test(courseName)) {
             console.log('❌ Nom du cours invalide. Veuillez réessayer.');
-            executeSpec1(); // Redemander le nom du cours
+            executeSpec1();
         } else {
-            // Appeler la fonction spécifique de spec1 pour rechercher les salles pour ce cours
-            const directory = './data'; // Dossier contenant les fichiers edt.cru
-            spec1.findRoomsForCourse(directory, courseName);
+            const directory = './data';
+            const result = spec1.findRoomsForCourse(directory, courseName);
 
-            // Demander à l'utilisateur de taper "Entrée" pour continuer
-            rl.question('\nAppuyez sur Entrée pour continuer...', () => {
-                promptUser(); // Retourner au menu principal après l'exécution
-            });
+            if (Object.keys(result).length === 0) {
+                console.log(`❌ Erreur : Aucun cours nommé "${courseName}" n'a été trouvé dans le système. Vérifiez le nom du cours et réessayez.`);
+                executeSpec1();
+            } else {
+                console.log(`✅ Salles trouvées pour le cours "${courseName}":\n`);
+                Object.entries(result).forEach(([room, days], index) => {
+                    console.log(`Salle #${index + 1}: ${room}`);
+                    Object.entries(days).forEach(([day, timeSlots]) => {
+                        console.log(`  - Jour : ${functions.transformDayName(day)}`);
+                        timeSlots.forEach(timeSlot => {
+                            console.log(`    - Heures : ${timeSlot.startTime} - ${timeSlot.endTime}`);
+                        });
+                    });
+                    console.log('-----------------------------------');
+                });
+
+                rl.question('\nAppuyez sur Entrée pour continuer...', () => {
+                    promptUser();
+                });
+            }
         }
     });
 }
@@ -163,26 +179,28 @@ function executeSpec2() {
     console.log('\n--- SPEC_02 : Consultation de la capacité d’une salle ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    // Regex pour valider le nom de la salle
     const roomNameRegex = /^[A-Za-z]+[0-9]*$/;
 
-    // Demander le nom de la salle
     rl.question('Entrez le nom de la salle (Ex. : B203) : ', (roomName) => {
-        // Vérifier si l'utilisateur veut revenir au menu principal
         if (roomName.toLowerCase() === '*') {
-            promptUser(); // Retourner au menu principal
+            promptUser();
         } else if (!roomNameRegex.test(roomName)) {
             console.log('❌ Nom de la salle invalide. Veuillez réessayer.');
-            executeSpec2(); // Redemander le nom de la salle
+            executeSpec2();
         } else {
-            // Appeler la fonction spécifique de spec2 pour consulter la capacité de la salle
-            const directory = './data'; // Dossier contenant les fichiers edt.cru
-            spec2.findRoomCapacity(directory, roomName);
+            const directory = './data';
+            const result = spec2.findRoomCapacity(directory, roomName);
 
-            // Demander à l'utilisateur de taper "Entrée" pour continuer
-            rl.question('\nAppuyez sur Entrée pour continuer...', () => {
-                promptUser(); // Retourner au menu principal après l'exécution
-            });
+            if (!result) {
+                console.log(`❌ Erreur : La salle nommée "${roomName}" n'a pas été trouvée dans le système. Vérifiez le nom de la salle et réessayez.`);
+                executeSpec2();
+            } else {
+
+
+                rl.question('\nAppuyez sur Entrée pour continuer...', () => {
+                    promptUser();
+                });
+            }
         }
     });
 }
@@ -194,26 +212,25 @@ function executeSpec3() {
     console.log('\n--- SPEC_03 : Vérification des disponibilités d’une salle ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    // Regex pour valider le nom de la salle
     const roomNameRegex = /^[A-Za-z]+[0-9]*$/;
 
-    // Demander le nom de la salle
     rl.question('Entrez le nom de la salle (Ex. : B203) : ', (roomName) => {
-        // Vérifier si l'utilisateur veut revenir au menu principal
         if (roomName.toLowerCase() === '*') {
-            promptUser(); // Retourner au menu principal
+            promptUser();
         } else if (!roomNameRegex.test(roomName)) {
             console.log('❌ Nom de la salle invalide. Veuillez réessayer.');
-            executeSpec3(); // Redemander le nom de la salle
+            executeSpec3();
         } else {
-            // Appeler la fonction spécifique de spec3 pour vérifier les disponibilités de la salle
-            const directory = './data'; // Dossier contenant les fichiers edt.cru
-            spec3.findRoomAvailability(directory, roomName);
+            const directory = './data';
+            const result = spec3.findRoomAvailability(directory, roomName);
 
-            // Demander à l'utilisateur de taper "Entrée" pour continuer
-            rl.question('\nAppuyez sur Entrée pour continuer...', () => {
-                promptUser(); // Retourner au menu principal après l'exécution
-            });
+            if (!result) {
+                executeSpec3();
+            } else {
+                rl.question('\nAppuyez sur Entrée pour continuer...', () => {
+                    promptUser();
+                });
+            }
         }
     });
 }
@@ -691,3 +708,8 @@ function promptUser() {
 
 // Lancer le programme en affichant le menu principal
 promptUser();
+export{
+    executeSpec1,
+    executeSpec2,
+    executeSpec3,
+}

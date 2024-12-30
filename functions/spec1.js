@@ -37,6 +37,7 @@
 // Importer les modules nécessaires
 import * as functions from '../utility/functions.js';
 import * as parser from '../utility/parser.js';
+import {executeSpec1} from '../main.js';
 
 /**
  * Fonction pour rechercher les salles utilisées pour un cours donné
@@ -45,11 +46,9 @@ import * as parser from '../utility/parser.js';
  * @param {boolean} [showResult] Indique si les résultats doivent être affichés dans la console (par défaut : true)
  * @returns {Object} Une liste des salles attribuées au cours, regroupées par salle et par jour
  */
+// spec1.js
 function findRoomsForCourse(directory, courseName, showResult = true) {
-    // Parser tous les fichiers edt.cru dans le répertoire donné
     const allTimeSlots = parser.parseAllEdtFiles(directory);
-
-    // Vérifier si le cours existe et collecter les informations sur les salles associées
     const roomsForCourse = allTimeSlots
         .filter(timeSlot => timeSlot.course.toLowerCase() === courseName.toLowerCase())
         .map(timeSlot => ({
@@ -59,16 +58,13 @@ function findRoomsForCourse(directory, courseName, showResult = true) {
             endTime: timeSlot.endTime
         }));
 
-    // Si aucune salle n'est trouvée, retourner un message d'erreur
     if (roomsForCourse.length === 0) {
         if (showResult) console.error(`❌ Erreur : Aucun cours nommé "${courseName}" n'a été trouvé dans le système. Vérifiez le nom du cours et réessayez.`);
+        executeSpec1();
         return {};
     }
 
-    // Regrouper les créneaux par salle
     let roomsGrouped = groupBy(roomsForCourse, 'room');
-
-    // Pour chaque salle, regrouper les créneaux par jour et trier les jours
     Object.keys(roomsGrouped).forEach(room => {
         roomsGrouped[room] = groupBy(roomsGrouped[room], 'day');
         const sortedDays = functions.sortDays(Object.keys(roomsGrouped[room]));
@@ -79,7 +75,6 @@ function findRoomsForCourse(directory, courseName, showResult = true) {
     });
 
     if (showResult) {
-        // Afficher un message de confirmation et retourner les résultats
         console.log(`✅ Salles trouvées pour le cours "${courseName}":\n`);
         Object.entries(roomsGrouped).forEach(([room, days], index) => {
             console.log(`Salle #${index + 1}: ${room}`);
