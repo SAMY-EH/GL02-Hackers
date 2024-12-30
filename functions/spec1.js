@@ -89,13 +89,95 @@ function createVisualTimetable(roomsGrouped, courseName) {
 }
 
 /**
- * Convertit une heure en position dans la timeline
- * @param {string} time L'heure au format "HH:MM"
- * @returns {number} La position dans la timeline
+ * Affiche une heatmap de l'occupation des salles
+ * @param {Object} roomsGrouped Les données groupées par salle et par jour
  */
-function getTimePosition(time) {
-  const [hours, minutes] = time.split(":").map(Number);
-  return Math.floor((hours - 8) * 2 + minutes / 30);
+function displayRoomOccupancyHeatmap(roomsGrouped) {
+  console.log("\n📊 Heatmap d'occupation des salles\n");
+
+  // Calculer les statistiques d'occupation pour chaque salle
+  const occupancyStats = calculateOccupancyStats(roomsGrouped);
+
+  // Définir les symboles pour différents niveaux d'occupation
+  const heatLevels = [
+    { threshold: 0, symbol: "⬜", description: "Libre" },
+    { threshold: 0.25, symbol: "🟨", description: "Peu occupé" },
+    { threshold: 0.5, symbol: "🟧", description: "Moyennement occupé" },
+    { threshold: 0.75, symbol: "🟥", description: "Très occupé" },
+  ];
+
+  // Afficher la légende
+  console.log("Légende :");
+  heatLevels.forEach((level) => {
+    console.log(
+      `${level.symbol} : ${level.description} (${Math.round(level.threshold * 100)}%+)`,
+    );
+  });
+  console.log();
+
+  // Afficher l'en-tête des heures
+  const hours = Array.from({ length: 11 }, (_, i) => i + 8);
+  console.log("         " + hours.map((h) => `${h}h`.padStart(3)).join(" "));
+
+  // Afficher la heatmap pour chaque salle et jour
+  Object.entries(occupancyStats).forEach(([room, dayStats]) => {
+    console.log(`\n${room}:`);
+    Object.entries(dayStats).forEach(([day, hourlyStats]) => {
+      const dayLine = `${functions.transformDayName(day).padEnd(8)} `;
+      const heatmap = hourlyStats
+        .map((occupancy) => {
+          const level = heatLevels.findLast(
+            (level) => occupancy >= level.threshold,
+          );
+          return level ? level.symbol : "⬜";
+        })
+        .join(" ");
+      console.log(dayLine + heatmap);
+    });
+  });
+}
+
+/**
+ * Calcule les statistiques d'occupation pour chaque salle
+ * @param {Object} roomsGrouped Les données groupées par salle et par jour
+ * @returns {Object} Statistiques d'occupation
+ */
+function calculateOccupancyStats(roomsGrouped) {
+  const stats = {};
+
+  Object.entries(roomsGrouped).forEach(([room, days]) => {
+    stats[room] = {};
+
+    Object.entries(days).forEach(([day, timeSlots]) => {
+      // Initialiser les statistiques pour chaque heure (8h-18h)
+      stats[room][day] = Array(11).fill(0);
+
+      timeSlots.forEach((slot) => {
+        const startHour = parseInt(slot.startTime.split(":")[0]);
+        const endHour = parseInt(slot.endTime.split(":")[0]);
+        const startMinutes = parseInt(slot.startTime.split(":")[1]);
+        const endMinutes = parseInt(slot.endTime.split(":")[1]);
+
+        // Calculer l'occupation pour chaque heure
+        for (let hour = startHour; hour < endHour; hour++) {
+          if (hour >= 8 && hour < 19) {
+            let occupation = 1.0;
+            if (hour === startHour) {
+              occupation = (60 - startMinutes) / 60;
+            } else if (hour === endHour - 1 && endMinutes < 60) {
+              occupation = endMinutes / 60;
+            }
+            stats[room][day][hour - 8] += occupation;
+          }
+        }
+      });
+
+      // Normaliser les valeurs entre 0 et 1
+      stats[room][day] = stats[room][day].map((value) => Math.min(value, 1));
+    });
+  });
+
+  return stats;
 }
 
 /**
@@ -172,6 +254,9 @@ function findRoomsForCourse(directory, courseName, showResult = true) {
 
     // affichage visuel des emplois du temps
     createVisualTimetable(roomsGrouped, courseName);
+
+    // ajout de la heatmap
+    displayRoomOccupancyHeatmap(roomsGrouped);
   }
 
   return roomsGrouped;
