@@ -242,42 +242,36 @@ function executeSpec4() {
     console.log('\n--- SPEC_04 : Recherche de salle disponible pour un créneau donné ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    // Regex pour valider le jour (L, MA, ME, J, V, S, D)
     const dayCodeRegex = /^(L|MA|ME|J|V|S|D)$/;
-    // Regex pour valider le format d'heure (HH:MM)
     const timeRegex = /^([01]?\d|2[0-3]):[0-5]\d$/;
 
-    // Demander le jour du créneau
-    rl.question('Entrez le jour du créneau (L, MA, ME, J, V, S, D) : ', (dayCode) => {
-        // Convertir le jour en majuscules pour la validation
-        dayCode = dayCode.toUpperCase();
+    rl.question('Entrez le jour du créneau (L, MA, ME, J, V, S, D) (par défaut : L) : ', (dayCode) => {
+        dayCode = dayCode.trim().toUpperCase() || 'L';
 
-        // Vérifier si l'utilisateur veut revenir au menu principal
         if (dayCode === '*') {
-            promptUser(); // Retourner au menu principal
+            promptUser();
         } else if (!dayCodeRegex.test(dayCode)) {
             console.log('❌ Jour invalide. Veuillez réessayer.');
-            executeSpec4(); // Redemander le jour
+            executeSpec4();
         } else {
-            // Demander l'heure de début du créneau
-            rl.question('Entrez l\'heure de début (HH:MM) : ', (startTime) => {
-                // Vérifier si l'utilisateur veut revenir au menu principal
+            rl.question('Entrez l\'heure de début (HH:MM) (par défaut : 08:00) : ', (startTime) => {
+                startTime = startTime.trim() || '08:00';
+
                 if (startTime.toLowerCase() === '*') {
-                    promptUser(); // Retourner au menu principal
+                    promptUser();
                 } else if (!timeRegex.test(startTime)) {
                     console.log('❌ Heure de début invalide. Veuillez réessayer.');
-                    executeSpec4(); // Redemander l'heure de début
+                    executeSpec4();
                 } else {
-                    // Demander l'heure de fin du créneau
-                    rl.question('Entrez l\'heure de fin (HH:MM) : ', (endTime) => {
-                        // Vérifier si l'utilisateur veut revenir au menu principal
+                    rl.question('Entrez l\'heure de fin (HH:MM) (par défaut : 18:00) : ', (endTime) => {
+                        endTime = endTime.trim() || '20:00';
+
                         if (endTime.toLowerCase() === '*') {
-                            promptUser(); // Retourner au menu principal
+                            promptUser();
                         } else if (!timeRegex.test(endTime)) {
                             console.log('❌ Heure de fin invalide. Veuillez réessayer.');
-                            executeSpec4(); // Redemander l'heure de fin
+                            executeSpec4();
                         } else {
-                            // Comparer l'heure de début et l'heure de fin
                             const [startHour, startMinute] = startTime.split(':').map(Number);
                             const [endHour, endMinute] = endTime.split(':').map(Number);
                             const startInMinutes = startHour * 60 + startMinute;
@@ -285,15 +279,13 @@ function executeSpec4() {
 
                             if (startInMinutes >= endInMinutes) {
                                 console.log('❌ L\'heure de début doit être inférieure à l\'heure de fin. Veuillez réessayer.');
-                                executeSpec4(); // Redemander les informations du créneau
+                                executeSpec4();
                             } else {
-                                // Appeler la fonction spécifique de spec4 pour rechercher les salles disponibles pour le créneau
-                                const directory = './data'; // Dossier contenant les fichiers edt.cru
+                                const directory = './data';
                                 spec4.findAvailableRoomsForTimeSlot(directory, dayCode, startTime, endTime);
 
-                                // Demander à l'utilisateur de taper "Entrée" pour continuer
                                 rl.question('\nAppuyez sur Entrée pour continuer...', () => {
-                                    promptUser(); // Retourner au menu principal après l'exécution
+                                    promptUser();
                                 });
                             }
                         }
@@ -311,15 +303,13 @@ function executeSpec5() {
     console.log('\n--- SPEC_05 : Génération d’un fichier iCalendar ---');
     console.log('Tapez "*" pour revenir au menu principal.');
 
-    // Regex pour valider les dates au format "MM-DD"
     const dateRegex = /^\d{2}-\d{2}$/;
     const fileNameRegex = /^[a-zA-Z0-9_\-\.]+\.ics$/;
-
-    // Obtenir l'année en cours
     const currentYear = new Date().getFullYear();
 
-    // Demander la date de début au format "MM-DD"
-    rl.question('Entrez la date de début (Ex. : 12-02) : ', (startDateInput) => {
+    rl.question('Entrez la date de début (Ex. : 12-02) (par défaut : 12-02) : ', (startDateInput) => {
+        startDateInput = startDateInput.trim() || '12-02';
+
         if (startDateInput.toLowerCase() === '*') {
             promptUser();
             return;
@@ -338,8 +328,9 @@ function executeSpec5() {
             return;
         }
 
-        // Demander la date de fin au format "MM-DD"
-        rl.question('Entrez la date de fin (Ex. : 12-08) : ', (endDateInput) => {
+        rl.question('Entrez la date de fin (Ex. : 12-08) (par défaut : 12-08) : ', (endDateInput) => {
+            endDateInput = endDateInput.trim() || '12-08';
+
             if (endDateInput.toLowerCase() === '*') {
                 promptUser();
                 return;
@@ -358,25 +349,22 @@ function executeSpec5() {
                 return;
             }
 
-            // Demander le nom du fichier iCalendar à générer (optionnel)
             rl.question('Entrez le nom du fichier iCalendar (laissez vide pour utiliser "calendrier.ics") : ', (calendarFileName) => {
                 if (calendarFileName.toLowerCase() === '*') {
                     promptUser();
                     return;
                 }
 
-                // Utiliser le nom par défaut si l'utilisateur n'a rien saisi
                 let finalCalendarFileName = calendarFileName.trim() === '' ? 'calendrier.ics' : calendarFileName;
-                // Vérifier si le nom de fichier est valide
                 if (!fileNameRegex.test(finalCalendarFileName)) {
                     console.log('❌ Nom de fichier invalide. Veuillez entrer un nom valide (ex.: calendrier.ics).');
                     executeSpec5();
                     return;
                 }
-                // Appeler la fonction spécifique de spec5 pour générer le fichier iCalendar
-                const directory = './data'; // Dossier contenant les fichiers edt.cru
+
+                const directory = './data';
                 spec5.generateICalendarForCourses(directory, startDate, endDate, finalCalendarFileName);
-                // Inviter l'utilisateur à appuyer sur Entrée pour retourner au menu principal
+
                 rl.question('\nAppuyez sur Entrée pour continuer...', () => {
                     promptUser();
                 });
@@ -484,12 +472,12 @@ function executeSpec7() {
     console.log('Tapez "*" pour revenir au menu principal.');
 
     const dateRegex = /^\d{2}-\d{2}$/; // Regex pour vérifier le format de la date
-
-    // Obtenir l'année en cours
     const currentYear = new Date().getFullYear();
 
     // Demander la date de début au format "MM-DD"
-    rl.question('Entrez la date de début (Ex. : 12-02) : ', (startDateInput) => {
+    rl.question('Entrez la date de début (Ex. : 12-02) (par défaut : 12-02) : ', (startDateInput) => {
+        startDateInput = startDateInput.trim() || '12-02';
+
         if (startDateInput.toLowerCase() === '*') {
             promptUser();  // Retourner au menu principal
             return;
@@ -509,7 +497,9 @@ function executeSpec7() {
         }
 
         // Demander la date de fin au format "MM-DD"
-        rl.question('Entrez la date de fin (Ex. : 12-08) : ', (endDateInput) => {
+        rl.question('Entrez la date de fin (Ex. : 12-08) (par défaut : 12-08) : ', (endDateInput) => {
+            endDateInput = endDateInput.trim() || '12-08';
+
             if (endDateInput.toLowerCase() === '*') {
                 promptUser(); // Retourner au menu principal
                 return;
@@ -529,7 +519,7 @@ function executeSpec7() {
             }
 
             // Appeler la fonction spécifique de spec7 pour visualiser le taux d'occupation des salles
-            const directory = './data';// Dossier contenant les fichiers edt.cru
+            const directory = './data'; // Dossier contenant les fichiers edt.cru
             spec7.visualizeRoomOccupancy(directory, startDate, endDate);
 
             // Inviter l'utilisateur à appuyer sur Entrée pour retourner au menu principal
@@ -607,11 +597,12 @@ function executeSpec9() {
 
     const dateRegex = /^\d{2}-\d{2}$/; // Regex pour valider le format de la date
     const percentageRegex = /^(100|[1-9]?\d)$/; // Regex pour valider les seuils (doit être un nombre entier compris entre 0 et 100)
-    // Obtenir l'année en cours
     const currentYear = new Date().getFullYear();
 
     // Demander la date de début au format "MM-DD"
-    rl.question('Entrez la date de début (Ex. : 12-02) : ', (startDateInput) => {
+    rl.question('Entrez la date de début (Ex. : 12-02) (par défaut : 12-02) : ', (startDateInput) => {
+        startDateInput = startDateInput.trim() || '12-02';
+
         if (startDateInput.toLowerCase() === '*') {
             promptUser(); // Retourner au menu principal
             return;
@@ -631,7 +622,9 @@ function executeSpec9() {
         }
 
         // Entrez la date de fin au format "MM-DD"
-        rl.question('Entrez la date de fin (Ex. : 12-08) : ', (endDateInput) => {
+        rl.question('Entrez la date de fin (Ex. : 12-08) (par défaut : 12-08) : ', (endDateInput) => {
+            endDateInput = endDateInput.trim() || '12-08';
+
             if (endDateInput.toLowerCase() === '*') {
                 promptUser(); // Retourner au menu principal
                 return;
