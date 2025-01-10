@@ -37,6 +37,7 @@ Ce projet vise à optimiser l'utilisation des salles de l'Université de la Rép
 - [Structure des fichiers](#structure-des-fichiers)
 - [Couverture du cahier des charges](#couverture-du-cahier-des-charges)
 - [Remarque](#remarque)
+- [Auteurs](#auteurs)
 
 ---
 
@@ -288,3 +289,17 @@ Le projet couvre l'ensemble des exigences définies dans le cahier des charges, 
 ## Remarque
 
 Le projet est en cours de développement et peut être sujet à des ajouts de fonctionnalités ainsi qu'à des corrections de bugs dans les versions futures. Pour toute contribution ou rapport de problème, n'hésitez pas à ouvrir une issue ou une pull request sur le dépôt.
+
+
+## Auteurs
+Version initiale :
+-  Theo TORREILLES
+-  Lucie GUERIN
+-  Julie VAN HOUDENHOVE
+Ajouts supplémentaires :
+- Samy EHSANI
+- Willen AMICHE
+- Hippolyte GINESTE
+- Arthur SPALANZANI
+
+
